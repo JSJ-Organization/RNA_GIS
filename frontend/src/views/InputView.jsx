@@ -1,15 +1,15 @@
 import Header from '../components/Header'
-import Main from '../components/Main'
+import Input from '../components/Input'
 import Footer from '../components/Footer'
 
-const HomeView = () => {
+const InputView = () => {
   return (
     <>
         <Header />
-        <Main />
-        <Footer />
+        <Input />
+        <Footer /> 
     </>
   )
 }
 
-export default HomeView
+export default InputView
