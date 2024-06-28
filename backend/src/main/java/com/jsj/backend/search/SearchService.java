@@ -3,6 +3,7 @@ package com.jsj.backend.search;
 import com.jsj.backend.search.juso.JusoApiClient;
 import com.jsj.backend.search.juso.JusoApiRequest;
 import com.jsj.backend.search.juso.JusoApiResponse;
+import com.jsj.backend.util.CleanInputUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,13 +39,13 @@ public class SearchService {
     public JusoApiResponse getAddress(String keyword) {
 
         log.info("keyword: {}", keyword);
-
+        String cleanKeyword = CleanInputUtil.cleanInput(keyword);
         // Juso API 요청을 생성하고 호출
         return jusoApiClient.getAddress(
                 JusoApiRequest.builder()
                         .currentPage(DEFAULT_CURRENT_PAGE)
                         .countPerPage(COUNT_PER_PAGE)
-                        .keyword(keyword)
+                        .keyword(cleanKeyword)
                         .confmKey(confmKey)
                         .resultType(RESULT_TYPE)
                         .build()
@@ -61,13 +62,13 @@ public class SearchService {
     public JusoApiResponse getAddressWithCurrentPage(String keyword, Integer currentPage) {
 
         log.info("keyword: {} , current page: {}", keyword, currentPage);
-
+        String cleanKeyword = CleanInputUtil.cleanInput(keyword);
         // Juso API 요청을 생성하고 호출
         return jusoApiClient.getAddress(
                 JusoApiRequest.builder()
                         .currentPage(currentPage)
                         .countPerPage(COUNT_PER_PAGE)
-                        .keyword(keyword)
+                        .keyword(cleanKeyword)
                         .confmKey(confmKey)
                         .resultType(RESULT_TYPE)
                         .build()
