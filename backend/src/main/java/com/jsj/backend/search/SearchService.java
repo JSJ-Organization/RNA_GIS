@@ -1,5 +1,7 @@
 package com.jsj.backend.search;
 
+import com.jsj.backend.exception.EmptyInputException;
+import com.jsj.backend.exception.InvalidInputException;
 import com.jsj.backend.search.juso.JusoApiClient;
 import com.jsj.backend.search.juso.JusoApiRequest;
 import com.jsj.backend.search.juso.JusoApiResponse;
@@ -37,9 +39,18 @@ public class SearchService {
      * @return JusoApiResponse 주소 검색 결과를 담고 있는 응답 객체
      */
     public JusoApiResponse getAddress(String keyword) {
-
+        if (keyword == null || keyword.trim().isEmpty()) {
+            String errorMessage = "검색이 불가능합니다:: 키워드가 빈 값입니다.";
+            log.error(errorMessage);
+            throw new EmptyInputException(errorMessage);
+        }
         log.info("keyword: {}", keyword);
         String cleanKeyword = CleanInputUtil.cleanInput(keyword);
+        if (cleanKeyword == null || cleanKeyword.trim().isEmpty()) {
+            String errorMessage = String.format("잘못된 요청이 확인되었습니다. 요청값:: %s", keyword);
+            log.error(errorMessage);
+            throw new InvalidInputException(errorMessage);
+        }
         // Juso API 요청을 생성하고 호출
         return jusoApiClient.getAddress(
                 JusoApiRequest.builder()
@@ -60,9 +71,18 @@ public class SearchService {
      * @return JusoApiResponse 주소 검색 결과를 담고 있는 응답 객체
      */
     public JusoApiResponse getAddressWithCurrentPage(String keyword, Integer currentPage) {
-
+        if (keyword == null || keyword.trim().isEmpty()) {
+            String errorMessage = "검색이 불가능합니다:: 키워드가 빈 값입니다.";
+            log.error(errorMessage);
+            throw new EmptyInputException(errorMessage);
+        }
         log.info("keyword: {} , current page: {}", keyword, currentPage);
         String cleanKeyword = CleanInputUtil.cleanInput(keyword);
+        if (cleanKeyword == null || cleanKeyword.trim().isEmpty()) {
+            String errorMessage = String.format("잘못된 요청이 확인되었습니다. 요청값:: %s", keyword);
+            log.error(errorMessage);
+            throw new InvalidInputException(errorMessage);
+        }
         // Juso API 요청을 생성하고 호출
         return jusoApiClient.getAddress(
                 JusoApiRequest.builder()

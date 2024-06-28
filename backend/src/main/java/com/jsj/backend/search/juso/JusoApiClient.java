@@ -2,6 +2,7 @@ package com.jsj.backend.search.juso;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsj.backend.exception.JsonProcessingCustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +44,7 @@ public class JusoApiClient {
                 request.getConfmKey(),
                 request.getResultType());
 
-        log.info(String.format("request api: %s", baseUrl+pathVariable));
+        log.info(String.format("request api: %s", baseUrl + pathVariable));
 
         try {
             // REST API 호출 후 응답을 객체로 변환하여 반환
@@ -54,7 +55,9 @@ public class JusoApiClient {
                             .body(String.class), JusoApiResponse.class); // String -> JusoApiResponse
         } catch (JsonProcessingException e) {
             // JSON 처리 예외 발생 시 런타임 예외로 던짐
-            throw new RuntimeException(e);
+            String errorMessage = String.format("Json 객체 변환이 불가능합니다. 요청 경로:: %s", baseUrl + pathVariable);
+            log.error(errorMessage, e);
+            throw new JsonProcessingCustomException(errorMessage, e);
         }
     }
 }
