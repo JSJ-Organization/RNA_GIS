@@ -8,187 +8,200 @@ import java.util.List;
  * 검색 결과를 담는 DTO 클래스.
  * 검색된 주소 목록과 페이지 정보를 포함합니다.
  */
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 public class JusoApiResponse {
+    private Result results;
 
-    /**
-     * 총 검색 데이터 수 (필수).
-     */
-    private String totalCount;
-
-    /**
-     * 현재 페이지 번호 (필수).
-     */
-    private Integer currentPage;
-
-    /**
-     * 페이지당 출력할 결과 Row 수 (필수).
-     */
-    private Integer countPerPage;
-
-    /**
-     * 에러 코드 (필수).
-     */
-    private String errorCode;
-
-    /**
-     * 에러 메시지 (필수).
-     */
-    private String errorMessage;
-
-    /**
-     * 주소 목록.
-     */
-    private List<Juso> juso;
-
-    /**
-     * 주소 정보를 담는 내부 클래스.
-     */
     @Data
     @NoArgsConstructor
-    public static class Juso {
+    public static class Result {
         /**
-         * 전체 도로명주소 (필수).
+         * api response 정보
          */
-        private String roadAddr;
+        private Common common;
+        /**
+         * 주소 목록.
+         */
+        private List<Juso> juso;
+
+        @Data
+        @NoArgsConstructor
+        public static class Common {
+
+            /**
+             * 총 검색 데이터 수 (필수).
+             */
+            private String totalCount;
+
+            /**
+             * 현재 페이지 번호 (필수).
+             */
+            private Integer currentPage;
+
+            /**
+             * 페이지당 출력할 결과 Row 수 (필수).
+             */
+            private Integer countPerPage;
+
+            /**
+             * 에러 코드 (필수).
+             */
+            private String errorCode;
+
+            /**
+             * 에러 메시지 (필수).
+             */
+            private String errorMessage;
+        }
 
         /**
-         * 도로명주소(참고항목 제외) (필수).
+         * 주소 정보를 담는 내부 클래스.
          */
-        private String roadAddrPart1;
+        @Data
+        @NoArgsConstructor
+        public static class Juso {
+            /**
+             * 전체 도로명주소 (필수).
+             */
+            private String roadAddr;
 
-        /**
-         * 도로명주소 참고항목 (선택).
-         */
-        private String roadAddrPart2;
+            /**
+             * 도로명주소(참고항목 제외) (필수).
+             */
+            private String roadAddrPart1;
 
-        /**
-         * 지번 정보 (필수).
-         */
-        private String jibunAddr;
+            /**
+             * 도로명주소 참고항목 (선택).
+             */
+            private String roadAddrPart2;
 
-        /**
-         * 도로명주소(영문) (필수).
-         */
-        private String engAddr;
+            /**
+             * 지번 정보 (필수).
+             */
+            private String jibunAddr;
 
-        /**
-         * 우편번호 (필수).
-         */
-        private String zipNo;
+            /**
+             * 도로명주소(영문) (필수).
+             */
+            private String engAddr;
 
-        /**
-         * 행정구역코드 (필수).
-         */
-        private String admCd;
+            /**
+             * 우편번호 (필수).
+             */
+            private String zipNo;
 
-        /**
-         * 도로명코드 (필수).
-         */
-        private String rnMgtSn;
+            /**
+             * 행정구역코드 (필수).
+             */
+            private String admCd;
 
-        /**
-         * 건물관리번호 (필수).
-         */
-        private String bdMgtSn;
+            /**
+             * 도로명코드 (필수).
+             */
+            private String rnMgtSn;
 
-        /**
-         * 상세건물명 (선택).
-         */
-        private String detBdNmList;
+            /**
+             * 건물관리번호 (필수).
+             */
+            private String bdMgtSn;
 
-        /**
-         * 건물명 (선택).
-         */
-        private String bdNm;
+            /**
+             * 상세건물명 (선택).
+             */
+            private String detBdNmList;
 
-        /**
-         * 공동주택여부 (1:공동주택, 0: 비공동주택) (필수).
-         */
-        private String bdKdcd;
+            /**
+             * 건물명 (선택).
+             */
+            private String bdNm;
 
-        /**
-         * 시도명 (필수).
-         */
-        private String siNm;
+            /**
+             * 공동주택여부 (1:공동주택, 0: 비공동주택) (필수).
+             */
+            private String bdKdcd;
 
-        /**
-         * 시군구명 (선택).
-         */
-        private String sggNm;
+            /**
+             * 시도명 (필수).
+             */
+            private String siNm;
 
-        /**
-         * 읍면동명 (필수).
-         */
-        private String emdNm;
+            /**
+             * 시군구명 (선택).
+             */
+            private String sggNm;
 
-        /**
-         * 법정리명 (선택).
-         */
-        private String liNm;
+            /**
+             * 읍면동명 (필수).
+             */
+            private String emdNm;
 
-        /**
-         * 도로명 (필수).
-         */
-        private String rn;
+            /**
+             * 법정리명 (선택).
+             */
+            private String liNm;
 
-        /**
-         * 지하여부 (0:지상, 1:지하) (필수).
-         */
-        private String udrtYn;
+            /**
+             * 도로명 (필수).
+             */
+            private String rn;
 
-        /**
-         * 건물본번 (필수).
-         */
-        private Integer buldMnnm;
+            /**
+             * 지하여부 (0:지상, 1:지하) (필수).
+             */
+            private String udrtYn;
 
-        /**
-         * 건물부번 (부번이 없는 경우 0) (필수).
-         */
-        private Integer buldSlno;
+            /**
+             * 건물본번 (필수).
+             */
+            private Integer buldMnnm;
 
-        /**
-         * 산여부 (0:대지, 1:산) (필수).
-         */
-        private String mtYn;
+            /**
+             * 건물부번 (부번이 없는 경우 0) (필수).
+             */
+            private Integer buldSlno;
 
-        /**
-         * 지번본번(번지) (필수).
-         */
-        private Integer lnbrMnnm;
+            /**
+             * 산여부 (0:대지, 1:산) (필수).
+             */
+            private String mtYn;
 
-        /**
-         * 지번부번(호) (부번이 없는 경우 0) (필수).
-         */
-        private Integer lnbrSlno;
+            /**
+             * 지번본번(번지) (필수).
+             */
+            private Integer lnbrMnnm;
 
-        /**
-         * 읍면동일련번호 (필수).
-         */
-        private String emdNo;
+            /**
+             * 지번부번(호) (부번이 없는 경우 0) (필수).
+             */
+            private Integer lnbrSlno;
 
-        /**
-         * 변동이력여부 (0: 현행 주소정보, 1: 변동된 주소정보) (필수).
-         * 2020년 12월 8일 추가된 항목.
-         * 요청 변수의 keyword(검색어)가 변동된 주소정보에서 검색된 정보.
-         */
-        private String hstryYn;
+            /**
+             * 읍면동일련번호 (필수).
+             */
+            private String emdNo;
 
-        /**
-         * 관련지번 (필수).
-         * 2020년 12월 8일 추가된 항목.
-         */
-        private String relJibun;
+            /**
+             * 변동이력여부 (0: 현행 주소정보, 1: 변동된 주소정보) (필수).
+             * 2020년 12월 8일 추가된 항목.
+             * 요청 변수의 keyword(검색어)가 변동된 주소정보에서 검색된 정보.
+             */
+            private String hstryYn;
 
-        /**
-         * 관할주민센터 (필수).
-         * 2020년 12월 8일 추가된 항목.
-         */
-        private String hemdNm;
+            /**
+             * 관련지번 (필수).
+             * 2020년 12월 8일 추가된 항목.
+             */
+            private String relJibun;
+
+            /**
+             * 관할주민센터 (필수).
+             * 2020년 12월 8일 추가된 항목.
+             */
+            private String hemdNm;
+        }
     }
 }
