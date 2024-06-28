@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 
 const Input = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [address, setAddress] = useState('');
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -11,12 +12,8 @@ const Input = () => {
   };
 
   useEffect(() => {
-    if (formVisible) {
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 200);
+    if (formVisible && inputRef.current) {
+      inputRef.current.focus();
     }
   }, [formVisible]);
 
@@ -27,15 +24,24 @@ const Input = () => {
     }
   };
 
-  // 주소 정보 전송
-  const sendAddress = () => {
+  // 주소 정보 전송 및 API 호출
+  const sendAddress = async () => {
     if (inputRef.current) {
-      console.log(inputRef.current.value);
+      const addressValue = inputRef.current.value;
+      setAddress(addressValue);
+      try {
+        const response = await fetch(`https://api.example.com/address?query=${encodeURIComponent(addressValue)}`);
+        const data = await response.json();
+        console.log(data);
+        // 필요한 추가 처리
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
   };
 
   return (
-    <div id="top-container">
+    <div id="input-top-container">
       <div className={`c-form-container ${formVisible ? 'form-visible' : ''}`}>
         <div className="c-form">
           <input

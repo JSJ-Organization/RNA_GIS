@@ -1,10 +1,7 @@
-$cornflower-lilac: #ffaea9;
-$salmon: #ff7b73;
-$your-pink: #ffcccc;
 
-#top-container {
+#input-top-container {
     font-size: 10px; // change value to scale
-    background-color: $salmon;
+    background-color: var(--coordinate100);
     margin: 0;
     display: grid;
     height: 100vh;
@@ -36,7 +33,7 @@ $your-pink: #ffcccc;
 }
 
 .c-form-welcome {
-    color: $salmon;
+    color: var(--coordinate100);
     top: 0;
     cursor: pointer;
     z-index: 1;
@@ -75,7 +72,7 @@ $your-pink: #ffcccc;
 }
 
 .c-form-input {
-    color: $your-pink;
+    color: var(--coordinate300);
     height: 100%;
     width: 100%;
     padding: 0 0.714em;
@@ -85,7 +82,7 @@ $your-pink: #ffcccc;
     }
 
     &:required:valid {
-        color: $salmon;
+        color: var(--coordinate100);
 
         + .c-form-button-label {
             color: var(--white);
@@ -98,7 +95,7 @@ $your-pink: #ffcccc;
 }
 
 .c-form-button-label {
-    color: $cornflower-lilac;
+    color: var(--coordinate200);
     height: 100%;
     width: auto;
     
@@ -117,7 +114,7 @@ $your-pink: #ffcccc;
     padding: 0;
     height: 100%;
     width: 5em;
-    background-color: $salmon;
+    background-color: var(--coordinate100);
 }
 
 .form-visible {
