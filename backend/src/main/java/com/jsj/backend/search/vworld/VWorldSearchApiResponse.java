@@ -188,6 +188,16 @@ public class VWorldSearchApiResponse {
                      * 지번 주소
                      */
                     private String parcel;
+
+                    /**
+                     * 건물명
+                     */
+                    private String bldnm;
+
+                    /**
+                     * 건물 상세명
+                     */
+                    private String bldnmdc;
                 }
 
                 /**
