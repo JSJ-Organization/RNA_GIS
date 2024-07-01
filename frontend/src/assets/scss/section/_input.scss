@@ -41,6 +41,7 @@
     width: 10em;
     height: 3.125em;
     border-radius: 3.125em;
+    font-weight: 900;
     background-color: var(--white);
     display: flex;
     align-items: center;
@@ -57,7 +58,7 @@
 
     .c-form-welcome-icon {
         margin-left: 0.6em;
-        font-size: 1.4em;
+        font-size: 1.2em;
     }
 }
 
@@ -193,7 +194,7 @@
         padding: 3.125em 0;
         background-color: var(--white);
         animation: dropdown 0.4s ease;
-        border-radius: 0 0 3.125em 3.125em;
+        border-radius: 0 0 2.4em 2.4em;
         font-size: 1.4em;
         font-weight: 600;
 
@@ -281,6 +282,10 @@
     .copy-span {
         &:hover{
             cursor: pointer;
+            color: var(--coordinate100);
+        }
+
+        .copied-span {
             color: var(--coordinate100);
         }
     }
