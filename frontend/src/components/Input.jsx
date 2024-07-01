@@ -219,7 +219,7 @@ const Input = () => {
                 {copiedSpan === selectedResult.point.y ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.point.y}
               </span>
             </div>
-            <Link to="/coordinate/map">
+            <Link to={`/coordinate/map?x=${selectedResult.point.x}&y=${selectedResult.point.y}`}>
               <div className='map-Link'>
                 <FontAwesomeIcon icon={faMapLocationDot} /> 위치 보기
               </div>
