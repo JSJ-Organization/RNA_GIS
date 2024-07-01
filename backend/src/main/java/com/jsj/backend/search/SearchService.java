@@ -119,6 +119,8 @@ public class SearchService {
                         .query(query)
                         .build());
 
+        logVWorldSearchApiResponse(query, response);
+
         return response;
     }
 
@@ -140,6 +142,8 @@ public class SearchService {
                         .page(page)
                         .build());
 
+        logVWorldSearchApiResponse(query, response);
+
         return response;
     }
 
@@ -154,5 +158,26 @@ public class SearchService {
             log.error(errorMessage);
             throw new EmptyInputException(errorMessage);
         }
+    }
+
+    /**
+     * VWorld 검색 API 응답을 로깅하고 로그 저장소에 저장합니다.
+     *
+     * @param query 검색한 쿼리
+     * @param response VWorldSearchApiResponse 응답 객체
+     */
+    private void logVWorldSearchApiResponse(String query, VWorldSearchApiResponse response) {
+        String errorCode = null;
+        String errorText = null;
+        if (response.getResponse().getError() != null) {
+            errorCode = response.getResponse().getError().getCode();
+            errorText = response.getResponse().getError().getText();
+        }
+        vWorldLogRepository.save(VWorldLog.builder()
+                .searchQuery(query)
+                .status(response.getResponse().getStatus())
+                .errorCode(errorCode)
+                .errorText(errorText)
+                .build());
     }
 }
