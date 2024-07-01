@@ -1,6 +1,5 @@
-
 #input-top-container {
-    font-size: 10px; // change value to scale
+    font-size: 10px; /* change value to scale */
     background-color: var(--coordinate100);
     margin: 0;
     display: grid;
@@ -13,7 +12,8 @@
     font-weight: 700;
     width: 20em;
     height: 6.25em;
-    transition: 0.2s;
+    top: 0;
+    transition: 0.4s;
 }
 
 .c-form {
@@ -38,18 +38,26 @@
     cursor: pointer;
     z-index: 1;
     position: absolute;
-    width: 20em;
-    height: 6.25em;
-    border-radius: 6.25em;
+    width: 10em;
+    height: 3.125em;
+    border-radius: 3.125em;
     background-color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: 0.2s;
+    font-size: 2em;
 
     &::before {
         font-size: 1.75em;
-        content: attr(data-title);
+    }
+    &:hover {
+        color: var(--coordinate300);
+    }
+
+    .c-form-welcome-icon {
+        margin-left: 0.6em;
+        font-size: 1.4em;
     }
 }
 
@@ -151,7 +159,7 @@
 
 .c-form-spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #ffffff;
+    border-left-color: var(--white);
     border-radius: 50%;
     width: 24px;
     height: 24px;
@@ -200,7 +208,108 @@
         .dropdown-item:hover {
             background-color: rgba(0, 0, 0, 0.05);
         }
+
+        .dropdown-text {
+            display: flex;
+            flex-direction: column; /* 아이콘과 텍스트가 세로로 쌓이도록 설정 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 추가 */
+            max-width: 16em; /* 필요에 따라 조정 가능 */
+        }
+
+        .dropdown-text li {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .search-icon {
+            flex-shrink: 0; /* 아이콘이 줄어들지 않도록 설정 */
+        }
     }
 }
 
 
+// 모달 css
+.modal-window {
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.63);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+
+    &.modal-visible {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    & > div {
+      width: 22em;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 2em;
+      background: var(--white);
+      border: 4px solid var(--coordinate100);
+    }
+
+    .address {
+        font-weight: 500;
+        font-size: 120%;
+        margin: 15px 0;
+    }
+
+    .map-Link {
+        color: var(--black);
+        margin-top: 1.6em;
+        
+        &:hover {
+            color: var(--coordinate100);
+        }
+    }
+
+    .copy-span {
+        &:hover{
+            cursor: pointer;
+            color: var(--coordinate100);
+        }
+    }
+
+}
+  
+.modal-close {
+    color: var(--coordinate100);
+    line-height: 50px;
+    font-size: 100%;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 70px;
+    text-decoration: none;
+
+    &:hover {
+        color: var(--black);
+        cursor: pointer;
+    }
+}
+
+.modal-window {
+    & > div {
+        border-radius: 1em;
+    }
+}
+
+.modal-window div:not(:last-of-type) {
+    margin-bottom: 1em;
+}
