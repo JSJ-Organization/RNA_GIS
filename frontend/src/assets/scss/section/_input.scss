@@ -38,18 +38,26 @@
     cursor: pointer;
     z-index: 1;
     position: absolute;
-    width: 20em;
-    height: 6.25em;
-    border-radius: 6.25em;
+    width: 10em;
+    height: 3.125em;
+    border-radius: 3.125em;
     background-color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: 0.2s;
+    font-size: 2em;
 
     &::before {
         font-size: 1.75em;
-        content: attr(data-title);
+    }
+    &:hover {
+        color: var(--coordinate300);
+    }
+
+    .c-form-welcome-icon {
+        margin-left: 0.6em;
+        font-size: 1.4em;
     }
 }
 
@@ -245,7 +253,7 @@
     }
 
     & > div {
-      width: 20em;
+      width: 22em;
       position: absolute;
       top: 50%;
       left: 50%;
