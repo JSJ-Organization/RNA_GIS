@@ -262,11 +262,20 @@
     }
 
     .map-Link {
-        color: var(--coordinate100);
+        color: var(--black);
         margin-top: 1.6em;
         
         &:hover {
-            color: var(--black);
+            color: var(--coordinate100);
+        }
+    }
+
+    .lat, .lng {
+        &:hover{
+            cursor: pointer;
+        }
+        &.copy {
+            color: var(--coordinate100);
         }
     }
 

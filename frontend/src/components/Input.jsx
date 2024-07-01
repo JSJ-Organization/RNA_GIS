@@ -9,7 +9,8 @@ const Input = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]); 
   const [modalVisible, setModalVisible] = useState(false); 
-  const [selectedResult, setSelectedResult] = useState('');
+  const [selectedResult, setSelectedResult] = useState(null);
+  const [copiedSpan, setCopiedSpan] = useState(null); // 복사 상태를 관리하는 상태 추가
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
@@ -91,6 +92,26 @@ const Input = () => {
     }
   };
 
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      console.log('Text copied to clipboard');
+    } catch (err) {
+      console.error('Error copying text: ', err);
+    }
+  };
+
+  const handleCopyClick = async (e, value) => {
+    if (copiedSpan !== null) {
+      return;
+    }
+    setCopiedSpan(value);
+    await copyToClipboard(value);
+    setTimeout(() => {
+      setCopiedSpan(null);
+    }, 1000);
+  };
+
   return (
     <>
       <div id="input-top-container">
@@ -138,15 +159,37 @@ const Input = () => {
           )}
         </div>
       </div>
-      <div onClick={closeModal} className={`modal-window ${modalVisible ? 'modal-visible' : ''}`}>
-        <div>
-          <div onClick={closeModal} className="modal-close">Close</div>
-          <div className='address'>{selectedResult.name}</div>
-          <div>위도 : 127.00</div>
-          <div>경도 : 127.00</div>
-          <Link to="/coordinate/map"><div className='map-Link'><FontAwesomeIcon icon={faMapLocationDot} /> 위치 보기</div></Link>
+      {selectedResult && (
+        <div onClick={closeModal} className={`modal-window ${modalVisible ? 'modal-visible' : ''}`}>
+          <div>
+            <div onClick={closeModal} className="modal-close">Close</div>
+            <div className='address'>{selectedResult.name}</div>
+            <div>
+              위도 :  
+              <span 
+                className='lat' 
+                onClick={(e) => handleCopyClick(e, selectedResult.website)}
+              >
+                {copiedSpan === selectedResult.website ? 'copy 👌' : selectedResult.website}
+              </span>
+            </div>
+            <div>
+              경도 :  
+              <span 
+                className='lng' 
+                onClick={(e) => handleCopyClick(e, selectedResult._id)}
+              >
+                {copiedSpan === selectedResult._id ? 'copy 👌' : selectedResult._id}
+              </span>
+            </div>
+            <Link to="/coordinate/map">
+              <div className='map-Link'>
+                <FontAwesomeIcon icon={faMapLocationDot} /> 위치 보기
+              </div>
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
