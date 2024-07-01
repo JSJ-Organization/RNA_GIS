@@ -113,7 +113,7 @@ public class SearchService {
         log.info("query: {}", query);
         checkEmpty(query);
 
-        var response = vWorldSearchApiClient.getPoint(
+        VWorldSearchApiResponse response = vWorldSearchApiClient.getPoint(
                 VWorldSearchApiRequest.builder()
                         .key(API_KEY_VWORLD)
                         .query(query)
@@ -135,7 +135,7 @@ public class SearchService {
         log.info("query: {}, page: {}", query, page);
         checkEmpty(query);
 
-        var response = vWorldSearchApiClient.getPoint(
+        VWorldSearchApiResponse response = vWorldSearchApiClient.getPoint(
                 VWorldSearchApiRequest.builder()
                         .key(API_KEY_VWORLD)
                         .query(query)
