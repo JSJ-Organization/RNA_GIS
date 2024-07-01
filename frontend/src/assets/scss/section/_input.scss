@@ -270,11 +270,9 @@
         }
     }
 
-    .lat, .lng {
+    .copy-span {
         &:hover{
             cursor: pointer;
-        }
-        &.copy {
             color: var(--coordinate100);
         }
     }
