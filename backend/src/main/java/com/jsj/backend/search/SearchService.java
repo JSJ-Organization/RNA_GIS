@@ -5,6 +5,7 @@ import com.jsj.backend.exception.InvalidInputException;
 import com.jsj.backend.search.juso.JusoApiClient;
 import com.jsj.backend.search.juso.JusoApiRequest;
 import com.jsj.backend.search.juso.JusoApiResponse;
+import com.jsj.backend.search.vworld.*;
 import com.jsj.backend.util.CleanInputUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,13 @@ public class SearchService {
     @Value("${api.juso.key}")
     private String confmKey; // 외부 설정 파일에서 주입받는 Juso API 키
     private final String RESULT_TYPE = "json"; // 결과 형식
+
+    private final VWorldSearchApiClient vWorldSearchApiClient;
+
+    @Value("${api.vworld.key}")
+    private String API_KEY_VWORLD; // 외부 설정 파일에서 주입받는 VWorld API 키
+
+    private final VWorldLogRepository vWorldLogRepository; // VWorld 로그 저장소
 
     /**
      * 주어진 키워드로 주소를 검색합니다.
@@ -93,5 +101,58 @@ public class SearchService {
                         .resultType(RESULT_TYPE)
                         .build()
         );
+    }
+
+    /**
+     * 주어진 쿼리로 포인트를 검색합니다.
+     *
+     * @param query 검색할 쿼리
+     * @return VWorldSearchApiResponse 포인트 검색 결과를 담고 있는 응답 객체
+     */
+    public VWorldSearchApiResponse getPoint(String query) {
+        log.info("query: {}", query);
+        checkEmpty(query);
+
+        var response = vWorldSearchApiClient.getPoint(
+                VWorldSearchApiRequest.builder()
+                        .key(API_KEY_VWORLD)
+                        .query(query)
+                        .build());
+
+        return response;
+    }
+
+    /**
+     * 주어진 쿼리와 페이지 번호로 포인트를 검색합니다.
+     *
+     * @param query 검색할 쿼리
+     * @param page 검색할 현재 페이지 번호
+     * @return VWorldSearchApiResponse 포인트 검색 결과를 담고 있는 응답 객체
+     */
+    public VWorldSearchApiResponse getPointWithPage(String query, Integer page) {
+        log.info("query: {}, page: {}", query, page);
+        checkEmpty(query);
+
+        var response = vWorldSearchApiClient.getPoint(
+                VWorldSearchApiRequest.builder()
+                        .key(API_KEY_VWORLD)
+                        .query(query)
+                        .page(page)
+                        .build());
+
+        return response;
+    }
+
+    /**
+     * 입력 쿼리가 빈 값인지 확인하고 예외를 던집니다.
+     *
+     * @param query 확인할 쿼리
+     */
+    private static void checkEmpty(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            String errorMessage = "검색이 불가능합니다:: 키워드가 빈 값입니다.";
+            log.error(errorMessage);
+            throw new EmptyInputException(errorMessage);
+        }
     }
 }

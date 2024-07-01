@@ -46,4 +46,32 @@ public class SearchController {
         // SearchService를 사용하여 페이지 번호를 포함한 주소 검색 결과를 얻어와서 클라이언트에 반환
         return ResponseEntity.ok(service.getAddressWithCurrentPage(keyword, currentPage));
     }
+
+    /**
+     * 주어진 쿼리로 포인트를 검색하는 HTTP GET 요청을 처리합니다.
+     *
+     * @param query 검색할 쿼리
+     * @return 검색 결과를 담고 있는 ResponseEntity 객체
+     */
+    @GetMapping("/point")
+    public ResponseEntity<?> getPoint(@RequestParam String query) {
+        // SearchService를 사용하여 포인트 검색 결과를 얻어와서 클라이언트에 반환
+        return ResponseEntity.ok(service.getPoint(query));
+    }
+
+    /**
+     * 주어진 쿼리와 페이지 번호로 포인트를 검색하는 HTTP GET 요청을 처리합니다.
+     *
+     * @param query 검색할 쿼리
+     * @param page 검색할 현재 페이지 번호
+     * @return 검색 결과를 담고 있는 ResponseEntity 객체
+     */
+    @GetMapping("/point-with-page")
+    public ResponseEntity<?> getPointWithPage(
+            @RequestParam String query,
+            @RequestParam Integer page
+    ) {
+        // SearchService를 사용하여 페이지 번호를 포함한 포인트 검색 결과를 얻어와서 클라이언트에 반환
+        return ResponseEntity.ok(service.getPointWithPage(query, page));
+    }
 }
