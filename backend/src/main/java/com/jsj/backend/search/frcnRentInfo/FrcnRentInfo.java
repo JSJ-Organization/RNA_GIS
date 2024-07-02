@@ -1,9 +1,7 @@
 package com.jsj.backend.search.frcnRentInfo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.jsj.backend.util.DateUtil;
+import jakarta.persistence.*;
 import lombok.*;
 import org.locationtech.jts.geom.Geometry;
 
@@ -17,11 +15,13 @@ import org.locationtech.jts.geom.Geometry;
 @Getter
 @Setter
 @Entity
+@Table(name = "frcn_rent_info")
 public class FrcnRentInfo {
 
     /** 고유 ID */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "frcn_rent_info_seq")
+    @SequenceGenerator(name = "frcn_rent_info_seq", sequenceName = "frcn_rent_info_id_seq", allocationSize = 1)
     private Long id;
 
     /** 사업소명 */
@@ -65,6 +65,7 @@ public class FrcnRentInfo {
     private String rcepntHoldCo;
 
     /** 기타 임대 농기계 보유 정보 */
+    @Column(columnDefinition = "TEXT")
     private String etcRentHoldCo;
 
     /** 관리 기관 전화번호 */
@@ -78,4 +79,8 @@ public class FrcnRentInfo {
 
     /** 데이터 기준 일자 */
     private String referenceDate;
+
+    /** Batch Job 시행 일자 */
+    @Builder.Default
+    private String batchDate = DateUtil.getTodayDateString();
 }
