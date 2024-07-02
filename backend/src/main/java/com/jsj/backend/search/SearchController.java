@@ -26,7 +26,7 @@ public class SearchController {
      * @return 검색 결과를 담고 있는 ResponseEntity 객체
      */
     @GetMapping("/address")
-    public ResponseEntity<?> getAddress(@RequestParam String keyword) {
+    public ResponseEntity<?> getAddress(@RequestParam(name = "keyword") String keyword) {
         // SearchService를 사용하여 주소 검색 결과를 얻어와서 클라이언트에 반환
         return ResponseEntity.ok(service.getAddress(keyword));
     }
@@ -40,8 +40,8 @@ public class SearchController {
      */
     @GetMapping("/address-with-page")
     public ResponseEntity<?> getAddressWithPage(
-            @RequestParam String keyword,
-            @RequestParam Integer currentPage
+            @RequestParam(name = "keyword") String keyword,
+            @RequestParam(name = "currentPage") Integer currentPage
     ) {
         // SearchService를 사용하여 페이지 번호를 포함한 주소 검색 결과를 얻어와서 클라이언트에 반환
         return ResponseEntity.ok(service.getAddressWithCurrentPage(keyword, currentPage));
@@ -54,7 +54,7 @@ public class SearchController {
      * @return 검색 결과를 담고 있는 ResponseEntity 객체
      */
     @GetMapping("/point")
-    public ResponseEntity<?> getPoint(@RequestParam String query) {
+    public ResponseEntity<?> getPoint(@RequestParam(name = "query") String query) {
         // SearchService를 사용하여 포인트 검색 결과를 얻어와서 클라이언트에 반환
         return ResponseEntity.ok(service.getPoint(query));
     }
@@ -68,8 +68,8 @@ public class SearchController {
      */
     @GetMapping("/point-with-page")
     public ResponseEntity<?> getPointWithPage(
-            @RequestParam String query,
-            @RequestParam Integer page
+            @RequestParam(name = "query") String query,
+            @RequestParam(name = "page") Integer page
     ) {
         // SearchService를 사용하여 페이지 번호를 포함한 포인트 검색 결과를 얻어와서 클라이언트에 반환
         return ResponseEntity.ok(service.getPointWithPage(query, page));
