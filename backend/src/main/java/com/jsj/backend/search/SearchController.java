@@ -74,4 +74,11 @@ public class SearchController {
         // SearchService를 사용하여 페이지 번호를 포함한 포인트 검색 결과를 얻어와서 클라이언트에 반환
         return ResponseEntity.ok(service.getPointWithPage(query, page));
     }
+
+    @GetMapping("/office-all")
+    public ResponseEntity<?> getAllOffice(
+    ) {
+        // SearchService를 사용하여 페이지 번호를 포함한 포인트 검색 결과를 얻어와서 클라이언트에 반환
+        return ResponseEntity.ok(service.getAllOffice());
+    }
 }

@@ -2,6 +2,9 @@ package com.jsj.backend.search;
 
 import com.jsj.backend.exception.EmptyInputException;
 import com.jsj.backend.exception.InvalidInputException;
+import com.jsj.backend.search.frcnRentInfo.FrcnRentInfoApiClient;
+import com.jsj.backend.search.frcnRentInfo.FrcnRentInfoApiRequest;
+import com.jsj.backend.search.frcnRentInfo.FrcnRentInfoApiResponse;
 import com.jsj.backend.search.juso.JusoApiClient;
 import com.jsj.backend.search.juso.JusoApiRequest;
 import com.jsj.backend.search.juso.JusoApiResponse;
@@ -39,6 +42,11 @@ public class SearchService {
     private String API_KEY_VWORLD; // 외부 설정 파일에서 주입받는 VWorld API 키
 
     private final VWorldLogRepository vWorldLogRepository; // VWorld 로그 저장소
+
+    @Value("${api.frcn-rent-info.key}")
+    private String API_KEY_FRCN_RENT_INFO;
+
+    private final FrcnRentInfoApiClient frcnRentInfoApiClient;
 
     /**
      * 주어진 키워드로 주소를 검색합니다.
@@ -178,6 +186,12 @@ public class SearchService {
                 .status(response.getResponse().getStatus())
                 .errorCode(errorCode)
                 .errorText(errorText)
+                .build());
+    }
+
+    public FrcnRentInfoApiResponse getAllOffice() {
+        return frcnRentInfoApiClient.getAllOffice(FrcnRentInfoApiRequest.builder()
+                        .serviceKey(API_KEY_FRCN_RENT_INFO)
                 .build());
     }
 }
