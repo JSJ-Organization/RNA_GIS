@@ -36,7 +36,7 @@ public class FrcnRentInfoBatchConfig {
     @Bean(name = "frcnRentInfoReader")
     public ItemReader<FrcnRentInfo> reader() {
         return new ItemReader<FrcnRentInfo>() {
-            private final Iterator<FrcnRentInfo> dataIterator = frcnRentInfoService.getAllInfo().iterator();
+            private final Iterator<FrcnRentInfo> dataIterator = frcnRentInfoService.getAllApiInfo().iterator();
 
             @Override
             public FrcnRentInfo read() {
