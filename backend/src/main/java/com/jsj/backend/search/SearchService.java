@@ -48,55 +48,56 @@ public class SearchService {
 
     public SearchResponse getAllOffice() {
         List<FrcnRentInfo> entities = frcnRentInfoService.getAllApiInfo();
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, "", 1);
     }
 
     public SearchResponse findByBatchDate() {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDate();
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, "", 1);
     }
 
     public SearchResponse findByBatchDateAndRdnmadr(String rdnmadr) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndRdnmadr(rdnmadr);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, rdnmadr, 1);
     }
 
     public SearchResponse findByBatchDateAndRdnmadrContaining(String rdnmadr) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndRdnmadrContaining(rdnmadr);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, rdnmadr, 1);
     }
 
     public SearchResponse findByBatchDateAndLnmadr(String lnmadr) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndLnmadr(lnmadr);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, lnmadr, 1);
     }
 
     public SearchResponse findByBatchDateAndLnmadrContaining(String lnmadr) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndLnmadrContaining(lnmadr);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, lnmadr, 1);
     }
 
     public SearchResponse findByBatchDateAndOfficeNm(String officeNm) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndOfficeNm(officeNm);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, officeNm, 1);
     }
+
     public SearchResponse findByBatchDateAndOfficeNmContaining(String officeNm) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndOfficeNmContaining(officeNm);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, officeNm, 1);
     }
 
     public SearchResponse findByBatchDateAndInstitutionNm(String institutionNm) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndInstitutionNm(institutionNm);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, institutionNm, 1);
     }
 
     public SearchResponse findByBatchDateAndInstitutionNmContaining(String institutionNm) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndInstitutionNmContaining(institutionNm);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, institutionNm, 1);
     }
 
     public SearchResponse findByLocationWithin(double x, double y, Integer distance) {
         List<FrcnRentInfo> entities = frcnRentInfoService.findByLocationWithin(x, y, distance);
-        return mapper.frcnRentInfoToSearch(entities, "", 1, 1);
+        return mapper.frcnRentInfoToSearch(entities, String.format("x:%f y:%f distance: %d", x, y, distance), 1);
     }
 }

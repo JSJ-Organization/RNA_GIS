@@ -36,13 +36,12 @@ public class SearchMapper {
     public SearchResponse frcnRentInfoToSearch(
             List<FrcnRentInfo> entities,
             String requestQuery,
-            Integer currentPage,
-            Integer totalPage
+            Integer currentPage
     ) {
 
         return SearchResponse.builder()
                 .currentPage(currentPage)
-                .totalData(totalPage)
+                .totalData(entities.size())
                 .requestQuery(requestQuery)
                 .crs(FRCN_RENT_INFO_API_CRS)
                 .frcnRentInfoResponses(Optional.ofNullable(frcnRentInfoMapper.entityToResponse(entities)))
