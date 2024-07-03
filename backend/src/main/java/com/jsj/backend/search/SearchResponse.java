@@ -1,9 +1,8 @@
 package com.jsj.backend.search;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.jsj.backend.search.frcnRentInfo.FrcnRentInfoResponse;
-import com.jsj.backend.search.vworld.VWorldSearchApiResponse;
-import com.jsj.backend.search.vworld.VWorldSearchResponse;
+import com.jsj.backend.frcnRentInfo.FrcnRentInfoResponse;
+import com.jsj.backend.vworld.search.VWorldSearchResponse;
 import lombok.*;
 
 import java.util.List;

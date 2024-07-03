@@ -1,4 +1,4 @@
-package com.jsj.backend.search.vworld;
+package com.jsj.backend.vworld.search;
 
 import org.springframework.stereotype.Service;
 

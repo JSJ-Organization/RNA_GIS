@@ -1,8 +1,8 @@
-package com.jsj.backend.search.vworld;
+package com.jsj.backend.vworld.search;
 
 import lombok.*;
 
-import static com.jsj.backend.search.vworld.SpatialReferenceSystem.WGS84;
+import static com.jsj.backend.vworld.SpatialReferenceSystem.WGS84;
 
 /**
  * VWorld Search API 요청을 위한 DTO 클래스.
