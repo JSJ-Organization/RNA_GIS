@@ -2,8 +2,6 @@ package com.jsj.backend.search;
 
 import com.jsj.backend.frcnRentInfo.FrcnRentInfo;
 import com.jsj.backend.frcnRentInfo.FrcnRentInfoService;
-import com.jsj.backend.search.frcnRentInfo.*;
-import com.jsj.backend.search.vworld.*;
 import com.jsj.backend.vworld.search.VWorldSearchApiResponse;
 import com.jsj.backend.vworld.search.VWorldSearchService;
 import lombok.RequiredArgsConstructor;
