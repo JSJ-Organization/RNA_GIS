@@ -2,7 +2,12 @@ package com.jsj.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 /**
  * HTTP Client 를 위한 구성 클래스.
@@ -19,9 +24,21 @@ public class RestClientConfig {
      *
      * @return 설정된 RestClient 객체
      */
+    @Primary
     @Bean
     public RestClient restClient() {
         return RestClient.builder()
                 .build();
+    }
+
+    @Bean(name = "byteArrayRestClient")
+    public RestClient xmlRestClient() {
+        return RestClient.builder()
+                .messageConverters(this::configureMessageConverters)
+                .build();
+    }
+
+    private void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new ByteArrayHttpMessageConverter());
     }
 }

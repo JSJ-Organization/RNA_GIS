@@ -1,6 +1,8 @@
 package com.jsj.backend.search;
 
+import com.jsj.backend.vworld.wmts.VWorldWMTSService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class SearchController {
 
     private final SearchService service;
-
+    private final VWorldWMTSService vWorldWMTSService;
     /**
      * 주어진 쿼리로 포인트를 검색하는 HTTP GET 요청을 처리합니다.
      *
@@ -119,5 +121,20 @@ public class SearchController {
             @RequestParam(name = "institutionNm") String institutionNm
     ) {
         return ResponseEntity.ok(service.findByBatchDateAndInstitutionNmContaining(institutionNm));
+    }
+
+    @GetMapping("/wmts/{layer}/{z}/{y}/{x}.{tileType}")
+    public ResponseEntity<?> getBytesTile(
+            @PathVariable(name = "layer") String layer,
+            @PathVariable(name = "z") int z,
+            @PathVariable(name = "y") int y,
+            @PathVariable(name = "x") int x,
+            @PathVariable(name = "tileType") String tileType
+    ) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "image/"+tileType);
+        byte[] tile = vWorldWMTSService.getTile(layer, z, y, x, tileType);
+        return ResponseEntity.ok().headers(headers).body(tile);
     }
 }
