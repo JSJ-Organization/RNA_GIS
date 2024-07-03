@@ -75,5 +75,29 @@ public class FrcnRentInfoMapper {
                         .build())
                 .collect(toList());
     }
-
+    public List<FrcnRentInfoResponse> entityToResponse(List<FrcnRentInfo> entities) {
+        return entities.stream()
+                .map(entity -> FrcnRentInfoResponse.builder()
+                        .x(entity.getGeometry().getCoordinate().getX())
+                        .y(entity.getGeometry().getCoordinate().getY())
+                        .roadNameAddress(entity.getRdnmadr())
+                        .parcelAddress(entity.getLnmadr())
+                        .officeNm(entity.getOfficeNm())
+                        .officePhoneNumber(entity.getOfficePhoneNumber())
+                        .trctorHoldCo(entity.getTrctorHoldCo())
+                        .cultvtHoldCo(entity.getCultvtHoldCo())
+                        .manageHoldCo(entity.getManageHoldCo())
+                        .harvestHoldCo(entity.getHarvestHoldCo())
+                        .thresherHoldCo(entity.getThresherHoldCo())
+                        .planterHoldCo(entity.getPlanterHoldCo())
+                        .transplantHoldCo(entity.getTransplantHoldCo())
+                        .rcepntHoldCo(entity.getRcepntHoldCo())
+                        .etcRentHoldCo(entity.getEtcRentHoldCo())
+                        .phoneNumber(entity.getPhoneNumber())
+                        .institutionNm(entity.getInstitutionNm())
+                        .referenceDate(entity.getReferenceDate())
+                        .instt_code(entity.getInstt_code())
+                        .build())
+                .collect(toList());
+    }
 }

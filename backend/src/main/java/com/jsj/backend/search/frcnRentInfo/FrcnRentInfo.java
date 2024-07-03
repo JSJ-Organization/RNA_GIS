@@ -37,7 +37,7 @@ public class FrcnRentInfo {
     private String lnmadr;
 
     /** 위도, 경도를 포함한 좌표 객체 EPSG:4326*/
-    @Column(columnDefinition = "Geometry")
+    @Column(columnDefinition = "geometry(Point, 4326)")
     private Geometry geometry;
 
     /** 트랙터 및 작업기 보유 대수 */

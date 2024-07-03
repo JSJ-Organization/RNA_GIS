@@ -1,8 +1,6 @@
 package com.jsj.backend.search.frcnRentInfo;
 
-import jakarta.persistence.Column;
 import lombok.*;
-import org.locationtech.jts.geom.Geometry;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -10,17 +8,18 @@ import org.locationtech.jts.geom.Geometry;
 @Getter
 @Setter
 public class FrcnRentInfoResponse {
+
+    private double x;
+    private double y;
+
+    private String roadNameAddress;
+    private String parcelAddress;
+
     /** 사업소명 */
     private String officeNm;
     /** 사업소 전화번호 */
     private String officePhoneNumber;
-    /** 소재지 도로명 주소 */
-    private String rdnmadr;
-    /** 소재지 지번 주소 */
-    private String lnmadr;
-    /** 위도, 경도를 포함한 좌표 객체 EPSG:4326*/
-    @Column(columnDefinition = "Geometry")
-    private Geometry geometry;
+
     /** 트랙터 및 작업기 보유 대수 */
     private String trctorHoldCo;
     /** 경운기 및 작업기 보유 대수 */
@@ -39,6 +38,7 @@ public class FrcnRentInfoResponse {
     private String rcepntHoldCo;
     /** 기타 임대 농기계 보유 정보 */
     private String etcRentHoldCo;
+
     /** 관리 기관 전화번호 */
     private String phoneNumber;
     /** 관리 기관명 */
