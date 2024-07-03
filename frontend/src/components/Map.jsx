@@ -4,13 +4,14 @@ import { useEffect, useRef } from 'react';
 import { Map as OlMap, View } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import TileLayer from 'ol/layer/Tile';
-import { OSM } from 'ol/source';
+import { OSM, XYZ } from 'ol/source';
 import { defaults } from 'ol/control/defaults';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Style, Icon } from 'ol/style';
+import { key } from '../key';
 
 const Map = () => {
   const location = useLocation();
@@ -23,10 +24,24 @@ const Map = () => {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    // 지도 기본 레이어
-    const tilelayer = new TileLayer({
-      source: new OSM({ attributions: '' })
-    });
+    // OSM 지도 기본 레이어
+    // const osmLayer = new TileLayer({
+    //   source: new OSM({ attributions: '' })
+    // });
+
+    // Vworld 지도 기본 레이어 api 호출
+    const tileLayer = new TileLayer({
+      source: new XYZ({
+        url : `https://api.vworld.kr/req/wmts/1.0.0/${key}/Base/{z}/{y}/{x}.png`,
+      })
+    })
+
+    // Vworld 지도 위성 레이어 api 호출
+    // const tileSateLayer = new TileLayer({
+    //   source: new XYZ({
+    //     url : `https://api.vworld.kr/req/wmts/1.0.0/${key}/Satellite/{z}/{y}/{x}.jpeg`,
+    //   })
+    // })
 
     // 마커 생성
     const marker = new Feature({
@@ -62,7 +77,7 @@ const Map = () => {
     // 지도 생성
     const map = new OlMap({
       controls: defaults({ zoom: false, rotate: false, attribution: false }),
-      layers: [tilelayer, markerLayer],
+      layers: [tileLayer, markerLayer],
       view: view
     });
 
