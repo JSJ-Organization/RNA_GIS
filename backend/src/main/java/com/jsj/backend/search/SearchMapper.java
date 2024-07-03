@@ -1,9 +1,9 @@
 package com.jsj.backend.search;
 
-import com.jsj.backend.search.frcnRentInfo.FrcnRentInfo;
-import com.jsj.backend.search.frcnRentInfo.FrcnRentInfoMapper;
-import com.jsj.backend.search.vworld.VWorldSearchApiResponse;
-import com.jsj.backend.search.vworld.VWorldSearchMapper;
+import com.jsj.backend.frcnRentInfo.FrcnRentInfo;
+import com.jsj.backend.frcnRentInfo.FrcnRentInfoMapper;
+import com.jsj.backend.vworld.search.VWorldSearchApiResponse;
+import com.jsj.backend.vworld.search.VWorldSearchMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

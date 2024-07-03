@@ -1,6 +1,6 @@
 package com.jsj.backend.batch;
 
-import com.jsj.backend.search.frcnRentInfo.FrcnRentInfo;
+import com.jsj.backend.frcnRentInfo.FrcnRentInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;

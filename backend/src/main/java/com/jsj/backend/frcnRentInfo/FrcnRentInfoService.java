@@ -1,4 +1,4 @@
-package com.jsj.backend.search.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo;
 
 import com.jsj.backend.exception.EmptyInputException;
 import com.jsj.backend.util.DateUtil;

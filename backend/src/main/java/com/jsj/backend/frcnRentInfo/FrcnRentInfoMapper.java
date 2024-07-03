@@ -1,4 +1,4 @@
-package com.jsj.backend.search.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;

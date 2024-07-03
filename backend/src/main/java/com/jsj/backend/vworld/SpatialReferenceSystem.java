@@ -1,4 +1,4 @@
-package com.jsj.backend.search.vworld;
+package com.jsj.backend.vworld;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

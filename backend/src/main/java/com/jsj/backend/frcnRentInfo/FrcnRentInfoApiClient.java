@@ -1,4 +1,4 @@
-package com.jsj.backend.search.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
