@@ -1,7 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeView from './views/HomeView';
-import InputView from "./views/InputView";
-import MapView from "./views/MapView";
+import BasicLayout from "./layout/BasicLayout";
+import CoordInput from "./views/coord/CoordInput";
+import CoordMap from "./views/coord/CoordMap";
+import AgriInput from "./views/agri/AgriInput";
+import AgriMap from "./views/agri/AgriMap";
 
 function App() {
 
@@ -9,8 +12,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<HomeView />} />
-        <Route path='/coordinate' element={<InputView />} />
-        <Route path='/coordinate/map' element={<MapView />} />
+        <Route path='/coordinate' element={<BasicLayout />} >
+          <Route index element={<CoordInput />} />
+          <Route path='map' element={<CoordMap />} />
+        </Route>
+        <Route path='/agricultural' element={<BasicLayout />} >
+          <Route index element={<AgriInput />} />
+          <Route path='map' element={<AgriMap />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
