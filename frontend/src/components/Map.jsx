@@ -4,13 +4,16 @@ import { useEffect, useRef } from 'react';
 import { Map as OlMap, View } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import TileLayer from 'ol/layer/Tile';
-import { OSM } from 'ol/source';
-import { defaults } from 'ol/control/defaults';
+import { OSM, XYZ } from 'ol/source';
+import { defaults as defaultControls } from 'ol/control';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Style, Icon } from 'ol/style';
+import LayerSwitcher from 'ol-layerswitcher';
+import 'ol-layerswitcher/src/ol-layerswitcher.css';
+import { key } from '../key';
 
 const Map = () => {
   const location = useLocation();
@@ -23,10 +26,33 @@ const Map = () => {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    // 지도 기본 레이어
-    const tilelayer = new TileLayer({
+    // OSM 지도 기본 레이어
+    const osmLayer = new TileLayer({
+      title: 'OSM',
+      type: 'base',
+      visible: true,
       source: new OSM({ attributions: '' })
     });
+
+    // Vworld 지도 기본 레이어 api 호출
+    const vworldLayer  = new TileLayer({
+      title: 'Vworld',
+      type: 'base',
+      visible: false,
+      source: new XYZ({
+        url : `https://api.vworld.kr/req/wmts/1.0.0/${key}/Base/{z}/{y}/{x}.png`,
+      })
+    })
+
+    // Vworld 지도 위성 레이어 api 호출
+    const vworldSateLayer = new TileLayer({
+      title: 'VworldSatellite',
+      type: 'base',
+      visible: false,
+      source: new XYZ({
+        url : `https://api.vworld.kr/req/wmts/1.0.0/${key}/Satellite/{z}/{y}/{x}.jpeg`,
+      })
+    })
 
     // 마커 생성
     const marker = new Feature({
@@ -50,6 +76,7 @@ const Map = () => {
     });
 
     const markerLayer = new VectorLayer({
+      title: 'Marker',
       source: vectorSource
     });
 
@@ -59,10 +86,19 @@ const Map = () => {
       zoom: 16
     });
 
+    // 레이어 스위처 생성
+    const layerSwitcher = new LayerSwitcher({
+      activationMode: 'click',
+      startActive: true,
+      tipLabel: 'Layers', // Optional label for button
+      groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
+    });
+    
+
     // 지도 생성
     const map = new OlMap({
-      controls: defaults({ zoom: false, rotate: false, attribution: false }),
-      layers: [tilelayer, markerLayer],
+      controls: defaultControls().extend([layerSwitcher]),
+      layers: [osmLayer, vworldLayer, vworldSateLayer, markerLayer],
       view: view
     });
 
