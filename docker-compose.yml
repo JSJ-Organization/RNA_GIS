@@ -1,22 +1,6 @@
 version: '3.8'
 
 services:
-  backend:
-    container_name: backend
-    build: backend
-    ports:
-      - "${BACKEND_PORT}:8080"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGIS_PORT: ${POSTGIS_PORT}
-      VWORLD_KEY: ${VWORLD_KEY}
-      FRCN_RENT_INFO_KEY: ${FRCN_RENT_INFO_KEY}
-    networks:
-      - geoserver-net
-
   postgres:
     image: postgis/postgis:13-3.1
     container_name: gis_postgres
@@ -57,7 +41,21 @@ services:
       - postgres
     networks:
       - geoserver-net
-
+  backend:
+    container_name: backend
+    build: backend
+    ports:
+      - "${BACKEND_PORT}:8080"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGIS_PORT: ${POSTGIS_PORT}
+      VWORLD_KEY: ${VWORLD_KEY}
+      FRCN_RENT_INFO_KEY: ${FRCN_RENT_INFO_KEY}
+    networks:
+      - geoserver-net
 networks:
   geoserver-net:
     driver: bridge
