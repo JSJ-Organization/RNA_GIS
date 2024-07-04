@@ -1,24 +1,27 @@
 import React from 'react'
 import Input from '../../components/Input'
-import { Helmet } from 'react-helmet-async'
 import useCssVariables from '../../hooks/useCssVariables';
+import PageMetadata from '../../components/PageMetadata';
 
 const CoordInput = () => {
 
     useCssVariables({
-        '--coordinate100': '#ff7b73',
-        '--coordinate200': '#ffaea9',
-        '--coordinate300': '#ffcccc',
-      });
+      '--main-color-100': '#ff7b73',
+      '--main-color-200': '#ffaea9',
+      '--main-color-300': '#ffcccc',
+    });
 
-  return (
-    <>
-        <Helmet>
-            <title>좌표 변환기</title>
-        </Helmet>
-        <Input /> 
-    </>
-  )
+    const metaData = {
+      title: "좌표 변환기",
+      description : "좌표 변환기",
+    }
+  
+    return (
+      <>
+        <PageMetadata meta={metaData} />
+        <Input title={metaData.title} />
+      </>
+    )
 }
 
 export default CoordInput

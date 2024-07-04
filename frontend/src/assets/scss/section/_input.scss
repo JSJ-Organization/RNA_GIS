@@ -1,6 +1,6 @@
 #input-top-container {
     font-size: 10px; /* change value to scale */
-    background-color: var(--coordinate100);
+    background-color: var(--main-color-100);
     margin: 0;
     display: grid;
     height: 100vh;
@@ -33,7 +33,7 @@
 }
 
 .c-form-welcome {
-    color: var(--coordinate100);
+    color: var(--main-color-100);
     top: 0;
     cursor: pointer;
     z-index: 1;
@@ -53,7 +53,7 @@
         font-size: 1.75em;
     }
     &:hover {
-        color: var(--coordinate300);
+        color: var(--main-color-300);
     }
 
     .c-form-welcome-icon {
@@ -81,7 +81,7 @@
 }
 
 .c-form-input {
-    color: var(--coordinate300);
+    color: var(--main-color-300);
     height: 100%;
     width: 100%;
     padding: 0 0.714em;
@@ -91,7 +91,7 @@
     }
 
     &:required:valid {
-        color: var(--coordinate100);
+        color: var(--main-color-100);
 
         + .c-form-button-label {
             color: var(--white);
@@ -104,7 +104,7 @@
 }
 
 .c-form-button-label {
-    color: var(--coordinate200);
+    color: var(--main-color-200);
     height: 100%;
     width: auto;
     
@@ -124,7 +124,7 @@
     padding: 0;
     height: 100%;
     width: 5em;
-    background-color: var(--coordinate100);
+    background-color: var(--main-color-100);
 }
 
 @keyframes dropdown {
@@ -261,7 +261,7 @@
       transform: translate(-50%, -50%);
       padding: 2em;
       background: var(--white);
-      border: 4px solid var(--coordinate100);
+      border: 4px solid var(--main-color-100);
     }
 
     .address {
@@ -275,25 +275,25 @@
         margin-top: 1.6em;
         
         &:hover {
-            color: var(--coordinate100);
+            color: var(--main-color-100);
         }
     }
 
     .copy-span {
         &:hover{
             cursor: pointer;
-            color: var(--coordinate100);
+            color: var(--main-color-100);
         }
 
         .copied-span {
-            color: var(--coordinate100);
+            color: var(--main-color-100);
         }
     }
 
 }
   
 .modal-close {
-    color: var(--coordinate100);
+    color: var(--main-color-100);
     line-height: 50px;
     font-size: 100%;
     position: absolute;

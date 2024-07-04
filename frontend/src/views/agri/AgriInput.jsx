@@ -1,21 +1,24 @@
 import React from 'react'
 import Input from '../../components/Input'
-import { Helmet } from 'react-helmet-async'
 import useCssVariables from '../../hooks/useCssVariables'
+import PageMetadata from '../../components/PageMetadata';
 
 const AgriInput = () => {
     useCssVariables({
-        '--coordinate100': '#1bff73',
-        '--coordinate200': '#b0ffb4',
-        '--coordinate300': '#A8FFC9',
-      });
+      '--main-color-100': '#00c94d',
+      '--main-color-200': '#A8FFC9',
+      '--main-color-300': '#6be299',
+    });
+
+    const metaData = {
+      title: '농기계 임대 검색',
+      description: '농기계 임대 검색',
+    };
 
   return (
     <>
-        <Helmet>
-            <title>농기계 임대 검색</title>
-        </Helmet>
-        <Input />
+      <PageMetadata meta={metaData} />
+      <Input title={metaData.title} />
     </>
   )
 }
