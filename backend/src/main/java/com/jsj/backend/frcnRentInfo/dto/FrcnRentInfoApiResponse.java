@@ -1,4 +1,4 @@
-package com.jsj.backend.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo.dto;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
-package com.jsj.backend.batch;
+package com.jsj.backend.batch.frcnRentInfo;
 
-import com.jsj.backend.frcnRentInfo.FrcnRentInfo;
+import com.jsj.backend.frcnRentInfo.entity.FrcnRentInfo;
 import com.jsj.backend.frcnRentInfo.FrcnRentInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;

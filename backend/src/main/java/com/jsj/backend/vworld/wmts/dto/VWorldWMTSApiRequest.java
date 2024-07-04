@@ -1,4 +1,4 @@
-package com.jsj.backend.vworld.wmts;
+package com.jsj.backend.vworld.wmts.dto;
 
 import lombok.*;
 

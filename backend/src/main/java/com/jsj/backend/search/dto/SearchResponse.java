@@ -1,8 +1,8 @@
-package com.jsj.backend.search;
+package com.jsj.backend.search.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.jsj.backend.frcnRentInfo.FrcnRentInfoResponse;
-import com.jsj.backend.vworld.search.VWorldSearchResponse;
+import com.jsj.backend.frcnRentInfo.dto.FrcnRentInfoResponse;
+import com.jsj.backend.vworld.search.dto.VWorldSearchResponse;
 import lombok.*;
 
 import java.util.List;

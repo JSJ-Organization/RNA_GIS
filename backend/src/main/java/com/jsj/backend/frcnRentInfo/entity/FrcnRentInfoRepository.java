@@ -1,4 +1,4 @@
-package com.jsj.backend.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,5 +1,7 @@
-package com.jsj.backend.vworld.search;
+package com.jsj.backend.vworld.search.httpClient;
 
+import com.jsj.backend.vworld.search.dto.VWorldSearchApiRequest;
+import com.jsj.backend.vworld.search.dto.VWorldSearchApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

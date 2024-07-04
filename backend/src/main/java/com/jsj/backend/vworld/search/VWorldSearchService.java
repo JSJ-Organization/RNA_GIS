@@ -1,8 +1,12 @@
 package com.jsj.backend.vworld.search;
 
 import com.jsj.backend.exception.EmptyInputException;
-import com.jsj.backend.vworld.VWorldLog;
-import com.jsj.backend.vworld.VWorldLogRepository;
+import com.jsj.backend.vworld.log.VWorldLog;
+import com.jsj.backend.vworld.log.VWorldLogRepository;
+import com.jsj.backend.vworld.search.dto.VWorldSearchApiRequest;
+import com.jsj.backend.vworld.search.dto.VWorldSearchApiResponse;
+import com.jsj.backend.vworld.search.dto.VWorldSearchResponse;
+import com.jsj.backend.vworld.search.httpClient.VWorldSearchApiClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

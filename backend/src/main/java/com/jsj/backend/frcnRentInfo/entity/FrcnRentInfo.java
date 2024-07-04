@@ -1,4 +1,4 @@
-package com.jsj.backend.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo.entity;
 
 import com.jsj.backend.util.DateUtil;
 import jakarta.persistence.*;

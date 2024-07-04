@@ -1,5 +1,6 @@
-package com.jsj.backend.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo.dto;
 
+import com.jsj.backend.frcnRentInfo.entity.FrcnRentInfo;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
