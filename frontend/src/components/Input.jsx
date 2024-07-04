@@ -50,11 +50,12 @@ const Input = ({title}) => {
       setIsLoading(true);
       setResults([]);
       try {
-        const tempUrl = `http://localhost:8080/api/v1/search/point-with-page?query=${addressValue}&page=1`;
+        // const tempUrl = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
+        const tempUrl = `/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
         const response = await fetch(tempUrl);
         const data = await response.json();
-        setResults(data.response.result.items);
-        console.log(data.response.result.items);
+        setResults(data.vworldSearchResponses);
+        console.log(data.vworldSearchResponses);
         timeoutFocus(inputRef);
       } catch (error) {
         setResults([{id:0}]);
@@ -84,6 +85,7 @@ const Input = ({title}) => {
     }
     const result = results.find((item) => item.id === id);
     if (result) {
+      console.log('result : ' + result);
       setSelectedResult(result);
       setModalVisible(true);
     } else {
@@ -158,8 +160,8 @@ const Input = ({title}) => {
                     ) : (
                       <>
                         <div className='dropdown-text'>
-                          <li>{result.address.road}</li>
-                          <li>{result.address.parcel}</li>
+                          <li>{result.roadNameAddress.road}</li>
+                          <li>{result.parcelAddress}</li>
                         </div>
                         <div className='search-icon'><FontAwesomeIcon icon={faSearch} /></div>
                       </>
@@ -180,46 +182,46 @@ const Input = ({title}) => {
             <div className='address'>
               <span
                 className='copy-span' 
-                onClick={(e) => handleCopyClick(e, selectedResult.address.road)}
+                onClick={(e) => handleCopyClick(e, selectedResult.roadNameAddress)}
               >
-                {copiedSpan === selectedResult.address.road ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.address.road}
+                {copiedSpan === selectedResult.roadNameAddress ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.roadNameAddress}
               </span>
             </div>
             <div>
               <span
                 className='copy-span' 
-                onClick={(e) => handleCopyClick(e, selectedResult.address.parcel)}
+                onClick={(e) => handleCopyClick(e, selectedResult.parcelAddress)}
               >
-                {copiedSpan === selectedResult.address.parcel ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.address.parcel}
+                {copiedSpan === selectedResult.parcelAddress ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.parcelAddress}
               </span>
             </div>
             <div>우편 번호 :&nbsp;
               <span
                 className='copy-span' 
-                onClick={(e) => handleCopyClick(e, selectedResult.address.zipcode)}
+                onClick={(e) => handleCopyClick(e, selectedResult.zipcode)}
               >
-                {copiedSpan === selectedResult.address.zipcode ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.address.zipcode}
+                {copiedSpan === selectedResult.zipcode ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.zipcode}
               </span>
               </div>
             <div>
               위도 :&nbsp;
               <span 
                 className='copy-span' 
-                onClick={(e) => handleCopyClick(e, selectedResult.point.x)}
+                onClick={(e) => handleCopyClick(e, selectedResult.x)}
               >
-                {copiedSpan === selectedResult.point.x ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.point.x}
+                {copiedSpan === selectedResult.x ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.x}
               </span>
             </div>
             <div>
               경도 :&nbsp;
               <span 
                 className='copy-span' 
-                onClick={(e) => handleCopyClick(e, selectedResult.point.y)}
+                onClick={(e) => handleCopyClick(e, selectedResult.y)}
               >
-                {copiedSpan === selectedResult.point.y ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.point.y}
+                {copiedSpan === selectedResult.y ? <span className='copied-span'>copy <FontAwesomeIcon icon={faThumbsUp} /></span> : selectedResult.y}
               </span>
             </div>
-            <Link to={`/coordinate/map?x=${selectedResult.point.x}&y=${selectedResult.point.y}`}>
+            <Link to={`/coordinate/map?x=${selectedResult.x}&y=${selectedResult.y}`}>
               <div className='map-Link'>
                 <FontAwesomeIcon icon={faMapLocationDot} /> 위치 보기
               </div>

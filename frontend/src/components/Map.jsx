@@ -13,7 +13,6 @@ import Point from 'ol/geom/Point';
 import { Style, Icon } from 'ol/style';
 import LayerSwitcher from 'ol-layerswitcher';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
-import { key } from '../key';
 
 const Map = () => {
   const location = useLocation();
@@ -40,7 +39,7 @@ const Map = () => {
       type: 'base',
       visible: false,
       source: new XYZ({
-        url : `https://api.vworld.kr/req/wmts/1.0.0/${key}/Base/{z}/{y}/{x}.png`,
+        url : `/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
       })
     })
 
@@ -50,7 +49,7 @@ const Map = () => {
       type: 'base',
       visible: false,
       source: new XYZ({
-        url : `https://api.vworld.kr/req/wmts/1.0.0/${key}/Satellite/{z}/{y}/{x}.jpeg`,
+        url : `/api/v1/search/wmts/Satellite/{z}/{y}/{x}.jpeg`,
       })
     })
 
