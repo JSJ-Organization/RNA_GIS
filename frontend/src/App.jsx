@@ -5,12 +5,10 @@ import CoordInput from "./views/coord/CoordInput";
 import CoordMap from "./views/coord/CoordMap";
 import AgriInput from "./views/agri/AgriInput";
 import AgriMap from "./views/agri/AgriMap";
-import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
 
   return (
-    <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<HomeView />} />
@@ -24,7 +22,6 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </HelmetProvider>
   );
 }
 
