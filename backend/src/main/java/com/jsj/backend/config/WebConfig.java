@@ -35,8 +35,10 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("GET")
-                        .allowedOrigins("http://localhost:5173", "http://localhost:80");
+                        .allowedMethods("*")
+                        .allowedOrigins("http://localhost:5173", "http://localhost:80", "http://localhost:8080", "http://localhost")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
