@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faMapLocationDot, faHandPointer, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-const Input = () => {
+const Input = ({title}) => {
   const [formVisible, setFormVisible] = useState(false);
   const [address, setAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -144,7 +144,7 @@ const Input = () => {
             <div
               className="c-form-welcome"
               onClick={handleWelcomeClick}
-            >좌표 변환기 <span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
+            >{title}<span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
           </div>
           {results.length > 0 && (
             <div className='dropdown-position'>

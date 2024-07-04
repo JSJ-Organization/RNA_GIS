@@ -1,49 +1,94 @@
+//Colours
+$green: #2ecc71;
+$red: #e74c3c;
+
 #main-top-container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: black;
 }
+
+.img-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-container {
+  position: absolute;
+}
+
+
+.kr-map {
+  width: 300px;
+}
+.circle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: scale(0);
+  transform-origin: center;
+  transition: transform 1s ease-in-out;
+  z-index: 1000;
+}
+
+.circle.red {
+  background-color: red;
+}
+
+.circle.green {
+  background-color: green;
+}
+
+// Basic Button Style
 .btn {
-    border: none;
-    display: block;
-    text-align: center;
-    cursor: pointer;
-    text-transform: uppercase;
-    outline: none;
-    overflow: hidden;
-    position: relative;
+  box-sizing: border-box;
+  appearance: none;
+  background-color: transparent;
+  border-radius: 5em;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 1.2em 2.8em;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+
+  &.red {
+    border: 2px solid $red;
+    color: $red;
+  }
+
+  &.green {
+    border: 2px solid $green;
+    color: $green;
+  }
+  
+  &.red:hover {
+    box-shadow: 0 0 40px 40px $red inset;
+  }
+
+  &.green:hover {
+    box-shadow: 0 0 40px 40px $green inset;
+  }
+
+  &:hover,
+  &:focus {
     color: #fff;
-    font-weight: 700;
-    font-size: 15px;
-    background-color: #222;
-    padding: 17px 60px;
-    margin: 0 auto;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.20);
+    outline: 0;
   }
-  
-  .btn span {
-    position: relative; 
-    z-index: 1;
-  }
-  
-  .btn:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 490%;
-    width: 140%;
-    background: var(--coordinate100);
-    -webkit-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
-    -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
-    transform: translateX(-98%) translateY(-25%) rotate(45deg);
-  }
-  
-  .btn:hover:after {
-    -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
-    transform: translateX(-9%) translateY(-25%) rotate(45deg);
-  }
-  
+}

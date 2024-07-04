@@ -1,13 +1,17 @@
-import Header from '../components/Header'
 import Main from '../components/Main'
-import Footer from '../components/Footer'
+import PageMetadata from '../components/PageMetadata';
 
 const HomeView = () => {
+
+  const metaData = {
+    title: '주소 인포',
+    description: '주소를 활용한 검색',
+  };
+
   return (
     <>
-        <Header />
-        <Main />
-        <Footer />
+      <PageMetadata meta={metaData} />
+      <Main />
     </>
   )
 }
