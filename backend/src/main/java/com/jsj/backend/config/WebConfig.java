@@ -35,8 +35,8 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("*")
-                        .allowedOrigins("http://localhost:3000");
+                        .allowedMethods("GET")
+                        .allowedOrigins("http://localhost:5173", "http://localhost:80");
             }
         };
     }

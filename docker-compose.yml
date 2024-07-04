@@ -41,9 +41,10 @@ services:
       - postgres
     networks:
       - geoserver-net
+
   backend:
     container_name: backend
-    build: backend
+    build: ./backend
     ports:
       - "${BACKEND_PORT}:8080"
     environment:
@@ -56,6 +57,19 @@ services:
       FRCN_RENT_INFO_KEY: ${FRCN_RENT_INFO_KEY}
     networks:
       - geoserver-net
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - geoserver-net
+    environment:
+      VITE_BACKEND_URL: "http://backend:8080"
+      VITE_GEOSERVER_URL: "http://geoserver_GIS:8081"
+      VITE_PGADMIN_URL: "http://gis_pgadmin:5050"
+
 networks:
   geoserver-net:
     driver: bridge
