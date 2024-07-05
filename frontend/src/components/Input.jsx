@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faHandPointer } from '@fortawesome/free-solid-svg-icons';
 import { usePath } from '../PathContext';
 import { pathData } from '../pathData';
-import AgriModal from './modal/ArgiModal';
+import AgriModal from './modal/AgriModal';
 import CoordModal from './modal/CoordModal';
 
 const Input = () => {

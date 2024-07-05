@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeView from './views/HomeView';
 import BasicLayout from "./layout/BasicLayout";
-import CoordInput from "./views/input/CoordInput";
-import CoordMap from "./views/map/CoordMap";
-import AgriInput from "./views/input/AgriInput";
-import AgriMap from "./views/map/AgriMap";
+import CoordInputView from "./views/input/CoordInputView";
+import CoordMapView from "./views/map/CoordMapView";
+import AgriInputView from "./views/input/AgriInputView";
+import AgriMapView from "./views/map/AgriMapView";
 import { PathProvider } from "./PathContext";
 
 function App() {
@@ -22,16 +22,16 @@ function App() {
               <BasicLayout />
             </PathProvider>
             } >
-            <Route index element={<CoordInput />} />
-            <Route path='map' element={<CoordMap />} />
+            <Route index element={<CoordInputView />} />
+            <Route path='map' element={<CoordMapView />} />
           </Route>
           <Route path='/agricultural' element={
             <PathProvider value={{ id: 'agricultural' }}>
               <BasicLayout />
             </PathProvider>
           } >
-            <Route index element={<AgriInput />} />
-            <Route path='map' element={<AgriMap />} />
+            <Route index element={<AgriInputView />} />
+            <Route path='map' element={<AgriMapView />} />
           </Route>
         </Routes>
       </BrowserRouter>
