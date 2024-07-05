@@ -5,6 +5,7 @@ import com.jsj.backend.frcnRentInfo.FrcnRentInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -26,6 +27,7 @@ public class FrcnRentInfoBatchConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager; // 트랜잭션 관리자 객체
+    private final FrcnRentInfoJobExecutionListener frcnRentInfoJobExecutionListener;
     private final FrcnRentInfoService frcnRentInfoService;
     private final JdbcTemplate jdbcTemplate;
 
@@ -34,6 +36,7 @@ public class FrcnRentInfoBatchConfig {
      * 데이터를 읽어오는 작업을 정의
      * @return ItemReader 객체
      */
+    @JobScope
     @Bean(name = "frcnRentInfoReader")
     public ItemReader<FrcnRentInfo> reader() {
         return new ItemReader<FrcnRentInfo>() {
@@ -85,7 +88,7 @@ public class FrcnRentInfoBatchConfig {
     public Job runJob() {
         return new JobBuilder("importFrcnRentInfo", jobRepository)
                 .start(importStep()) // .next 를 사용하여 다음 작업 수행할 수도 있음
-//                .listener(customJobExecutionListener) Job 전후 처리 작업 정의
+                .listener(frcnRentInfoJobExecutionListener) // Job 전후 처리 작업 정의
                 .build();
     }
 }

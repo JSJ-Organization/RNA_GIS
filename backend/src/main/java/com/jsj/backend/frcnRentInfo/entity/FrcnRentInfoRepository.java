@@ -1,6 +1,7 @@
 package com.jsj.backend.frcnRentInfo.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,17 @@ import java.util.List;
 public interface FrcnRentInfoRepository extends JpaRepository<FrcnRentInfo, Long> {
 
     List<FrcnRentInfo> findAllByBatchDate(String batchDate);
+    boolean existsByBatchDate(String batchDate);
+    @Modifying
+    @Query("DELETE FROM FrcnRentInfo f WHERE f.batchDate = :date")
+    void deleteAllByBatchDate(@Param("date") String date);
+
+    @Query("SELECT COUNT(f) > 0 FROM FrcnRentInfo f WHERE f.batchDate < :date")
+    boolean existsPastDataByBatchDate(@Param("date") String date);
+
+    @Modifying
+    @Query("DELETE FROM FrcnRentInfo f WHERE f.batchDate < :date")
+    void deletePastDataByDate(@Param("date") String date);
 
     List<FrcnRentInfo> findAllByBatchDateAndRdnmadr(String batchDate, String rdnmadr);
 

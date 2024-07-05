@@ -28,7 +28,7 @@ public class SearchMapper {
                 .currentPage(apiResponse.getResponse().getPage().getCurrent())
                 .totalPage(apiResponse.getResponse().getPage().getTotal())
                 .requestQuery(requestQuery)
-                .crs(apiResponse.getResponse().getResult().getCrs())
+                .crs(FRCN_RENT_INFO_API_CRS)
                 .vWorldSearchResponses(Optional.ofNullable(vWorldSearchMapper.apiToResponse(apiResponse)))
                 .build();
     }
