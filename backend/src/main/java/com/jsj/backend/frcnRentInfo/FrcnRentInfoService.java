@@ -27,12 +27,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class FrcnRentInfoService {
-    private final FrcnRentInfoLogRepository frcnRentInfoLogRepository;
-    private final FrcnRentInfoRepository frcnRentInfoRepository;
-    private final FrcnRentInfoMapper frcnRentInfoMapper;
+
+    private final FrcnRentInfoLogRepository frcnRentInfoLogRepository; // 농기계 임대 정보 로그 저장소
+    private final FrcnRentInfoRepository frcnRentInfoRepository; // 농기계 임대 정보 저장소
+    private final FrcnRentInfoMapper frcnRentInfoMapper; // 농기계 임대 정보 매퍼 객체
     @Value("${api.frcn-rent-info.key}")
-    private String API_KEY_FRCN_RENT_INFO;
-    private final FrcnRentInfoApiClient frcnRentInfoApiClient;
+    private String API_KEY_FRCN_RENT_INFO; // 외부 설정 파일에서 주입받는 API 키
+    private final FrcnRentInfoApiClient frcnRentInfoApiClient; // 농기계 임대 정보 API 클라이언트
 
     /**
      * 모든 농기계 임대 정보를 가져옵니다.
@@ -49,6 +50,11 @@ public class FrcnRentInfoService {
         return response;
     }
 
+    /**
+     * 최신 배치 날짜로 농기계 임대 정보를 검색합니다.
+     *
+     * @return FrcnRentInfo 엔티티 리스트
+     */
     public List<FrcnRentInfo> findByBatchDate() {
         String todayDateString = DateUtil.getTodayDateString();
         List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDate(todayDateString);
@@ -56,14 +62,12 @@ public class FrcnRentInfoService {
         return response;
     }
 
-    public List<FrcnRentInfo> findByBatchDateAndRdnmadr(String rdnmadr) {
-        checkEmpty(rdnmadr);
-        String todayDateString = DateUtil.getTodayDateString();
-        List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndRdnmadr(todayDateString, rdnmadr);
-        logFrcnRentInfoResponse("findByBatchDateAndRdnmadr", new HashMap<>(), response);
-        return response;
-    }
-
+    /**
+     * 최신 배치 날짜와 주어진 도로명 주소를 포함하는 농기계 임대 정보를 검색합니다.
+     *
+     * @param rdnmadr 도로명 주소
+     * @return FrcnRentInfo 엔티티 리스트
+     */
     public List<FrcnRentInfo> findByBatchDateAndRdnmadrContaining(String rdnmadr) {
         checkEmpty(rdnmadr);
         String todayDateString = DateUtil.getTodayDateString();
@@ -72,6 +76,12 @@ public class FrcnRentInfoService {
         return response;
     }
 
+    /**
+     * 최신 배치 날짜와 주어진 지번 주소를 포함하는 농기계 임대 정보를 검색합니다.
+     *
+     * @param lnmadr 지번 주소
+     * @return FrcnRentInfo 엔티티 리스트
+     */
     public List<FrcnRentInfo> findByBatchDateAndLnmadr(String lnmadr) {
         checkEmpty(lnmadr);
         String todayDateString = DateUtil.getTodayDateString();
@@ -80,6 +90,12 @@ public class FrcnRentInfoService {
         return response;
     }
 
+    /**
+     * 최신 배치 날짜와 주어진 지번 주소를 포함하는 농기계 임대 정보를 검색합니다.
+     *
+     * @param lnmadr 지번 주소
+     * @return FrcnRentInfo 엔티티 리스트
+     */
     public List<FrcnRentInfo> findByBatchDateAndLnmadrContaining(String lnmadr) {
         checkEmpty(lnmadr);
         String todayDateString = DateUtil.getTodayDateString();
@@ -88,14 +104,12 @@ public class FrcnRentInfoService {
         return response;
     }
 
-    public List<FrcnRentInfo> findByBatchDateAndOfficeNm(String officeNm) {
-        checkEmpty(officeNm);
-        String todayDateString = DateUtil.getTodayDateString();
-        List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndOfficeNm(todayDateString, officeNm);
-        logFrcnRentInfoResponse("findByBatchDateAndOfficeNm", new HashMap<>(), response);
-        return response;
-    }
-
+    /**
+     * 최신 배치 날짜와 주어진 사업소명을 포함하는 농기계 임대 정보를 검색합니다.
+     *
+     * @param officeNm 사업소명
+     * @return FrcnRentInfo 엔티티 리스트
+     */
     public List<FrcnRentInfo> findByBatchDateAndOfficeNmContaining(String officeNm) {
         checkEmpty(officeNm);
         String todayDateString = DateUtil.getTodayDateString();
@@ -104,14 +118,12 @@ public class FrcnRentInfoService {
         return response;
     }
 
-    public List<FrcnRentInfo> findByBatchDateAndInstitutionNm(String institutionNm) {
-        checkEmpty(institutionNm);
-        String todayDateString = DateUtil.getTodayDateString();
-        List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndInstitutionNm(todayDateString, institutionNm);
-        logFrcnRentInfoResponse("findByBatchDateAndInstitutionNm", new HashMap<>(), response);
-        return response;
-    }
-
+    /**
+     * 최신 배치 날짜와 주어진 관리기관명을 포함하는 농기계 임대 정보를 검색합니다.
+     *
+     * @param institutionNm 관리기관명
+     * @return FrcnRentInfo 엔티티 리스트
+     */
     public List<FrcnRentInfo> findByBatchDateAndInstitutionNmContaining(String institutionNm) {
         checkEmpty(institutionNm);
         String todayDateString = DateUtil.getTodayDateString();
@@ -120,6 +132,14 @@ public class FrcnRentInfoService {
         return response;
     }
 
+    /**
+     * 주어진 좌표와 거리 내에 있는 농기계 임대 정보를 검색합니다.
+     *
+     * @param x 좌표의 경도
+     * @param y 좌표의 위도
+     * @param distance 검색할 거리
+     * @return FrcnRentInfo 엔티티 리스트
+     */
     public List<FrcnRentInfo> findByLocationWithin(double x, double y, Integer distance) {
         Map<String, String> errorMap = new HashMap<>();
         try {
@@ -134,6 +154,13 @@ public class FrcnRentInfoService {
         return response;
     }
 
+    /**
+     * 농기계 임대 정보 응답을 로깅합니다.
+     *
+     * @param query    검색 쿼리
+     * @param error    에러 정보
+     * @param response 응답 객체
+     */
     private void logFrcnRentInfoResponse(String query, Map<String, String> error, List<FrcnRentInfo> response) {
         String status = response.isEmpty() ? "NOT_FOUND" : error.isEmpty() ? "OK" : "ERROR";
         String errorCode = error.get("errorCode");
@@ -147,6 +174,11 @@ public class FrcnRentInfoService {
                 .build());
     }
 
+    /**
+     * 입력 쿼리가 빈 값인지 확인하고 예외를 던집니다.
+     *
+     * @param query 확인할 쿼리
+     */
     public static void checkEmpty(String query) {
         if (query == null || query.trim().isEmpty()) {
             String errorMessage = "검색이 불가능합니다:: 키워드가 빈 값입니다.";
@@ -155,6 +187,14 @@ public class FrcnRentInfoService {
         }
     }
 
+    /**
+     * 주어진 좌표와 거리가 유효한 값인지 확인하고 예외를 던집니다.
+     *
+     * @param x       경도
+     * @param y       위도
+     * @param distance 거리
+     * @throws InvalidTypeException 유효하지 않은 값일 경우 던지는 예외
+     */
     public static void checkEmpty(double x, double y, Integer distance) throws InvalidTypeException {
         if (distance == null) {
             String errorMessage = "distance 가 빈 값입니다:: distance: null";

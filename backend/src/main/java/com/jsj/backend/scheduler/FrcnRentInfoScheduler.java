@@ -16,9 +16,6 @@ import org.springframework.stereotype.Component;
 /**
  * FrcnRentInfo 배치 작업을 스케줄링하는 클래스.
  * 매일 새벽 1시에 배치 작업을 실행합니다.
- *
- * @Component 애노테이션을 사용하여 스프링 컨텍스트에서 빈으로 관리됩니다.
- * @Slf4j는 로깅을 위한 로거를 제공합니다.
  */
 @Component
 @Slf4j
