@@ -10,6 +10,8 @@ import lombok.*;
 @Getter
 @Setter
 public class FrcnRentInfoResponse {
+    @Schema(description = "식별자")
+    private Long id;
     /** X 좌표 */
     @Schema(description = "X 좌표")
     private double x;
