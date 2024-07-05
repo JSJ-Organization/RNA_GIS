@@ -13,6 +13,7 @@ import Point from 'ol/geom/Point';
 import { Style, Icon } from 'ol/style';
 import LayerSwitcher from 'ol-layerswitcher';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
+import markerImg from '../assets/images/marker.png';
 
 const Map = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const Map = () => {
   useEffect(() => {
     // OSM 지도 기본 레이어
     const osmLayer = new TileLayer({
-      title: 'OSM',
+      title: '2D 지도 (OSM)',
       type: 'base',
       visible: true,
       source: new OSM({ attributions: '' })
@@ -35,7 +36,7 @@ const Map = () => {
 
     // Vworld 지도 기본 레이어 api 호출
     const vworldLayer  = new TileLayer({
-      title: 'Vworld',
+      title: '2D 지도 (Vworld)',
       type: 'base',
       visible: false,
       source: new XYZ({
@@ -45,7 +46,7 @@ const Map = () => {
 
     // Vworld 지도 위성 레이어 api 호출
     const vworldSateLayer = new TileLayer({
-      title: 'VworldSatellite',
+      title: '위성지도 (Vworld)',
       type: 'base',
       visible: false,
       source: new XYZ({
@@ -61,7 +62,7 @@ const Map = () => {
     // 마커 스타일 설정
     marker.setStyle(new Style({
       image: new Icon({
-        src: 'https://openlayers.org/en/latest/examples/data/icon.png',
+        src: markerImg,
         scale: 1,
         anchor: [0.5, 1],
         anchorXUnits: 'fraction',
@@ -75,7 +76,7 @@ const Map = () => {
     });
 
     const markerLayer = new VectorLayer({
-      title: 'Marker',
+      title: '마커',
       source: vectorSource
     });
 
