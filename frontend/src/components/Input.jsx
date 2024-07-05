@@ -50,6 +50,7 @@ const Input = ({title}) => {
       setIsLoading(true);
       setResults([]);
       try {
+
         const tempUrl = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
         const response = await fetch(tempUrl);
         const data = await response.json();
