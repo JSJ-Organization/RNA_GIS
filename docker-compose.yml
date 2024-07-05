@@ -58,17 +58,17 @@ services:
     networks:
       - geoserver-net
 
-  frontend:
-    container_name: frontend
-    build: ./frontend
-    ports:
-      - "80:80"
-    networks:
-      - geoserver-net
-    environment:
-      VITE_BACKEND_URL: "http://backend:8080"
-      VITE_GEOSERVER_URL: "http://geoserver_GIS:8081"
-      VITE_PGADMIN_URL: "http://gis_pgadmin:5050"
+#  frontend:
+#    container_name: frontend
+#    build: ./frontend
+#    ports:
+#      - "80:80"
+#    networks:
+#      - geoserver-net
+#    environment:
+#      VITE_BACKEND_URL: "http://backend:8080"
+#      VITE_GEOSERVER_URL: "http://geoserver_GIS:8081"
+#      VITE_PGADMIN_URL: "http://gis_pgadmin:5050"
 
 networks:
   geoserver-net:

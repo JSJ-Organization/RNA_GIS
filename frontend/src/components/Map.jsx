@@ -39,7 +39,7 @@ const Map = () => {
       type: 'base',
       visible: false,
       source: new XYZ({
-        url : `/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
+        url : `http://localhost:8080/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
       })
     })
 
@@ -49,7 +49,7 @@ const Map = () => {
       type: 'base',
       visible: false,
       source: new XYZ({
-        url : `/api/v1/search/wmts/Satellite/{z}/{y}/{x}.jpeg`,
+        url : `http://localhost:8080/api/v1/search/wmts/Satellite/{z}/{y}/{x}.jpeg`,
       })
     })
 
@@ -92,7 +92,7 @@ const Map = () => {
       tipLabel: 'Layers', // Optional label for button
       groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
     });
-    
+
 
     // 지도 생성
     const map = new OlMap({
@@ -109,7 +109,7 @@ const Map = () => {
   }, [x, y]);
 
   return (
-    <div id='map' ref={mapRef} />
+      <div id='map' ref={mapRef} />
   );
 }
 

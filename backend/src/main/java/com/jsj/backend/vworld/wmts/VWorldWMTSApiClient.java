@@ -39,8 +39,8 @@ public class VWorldWMTSApiClient {
         URI uri = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("api.vworld.kr")
-                .path("/req/wmts/1.0.0/{key}/Satellite/{tileMatrix}/{tileRow}/{tileCol}.{tileType}")
-                .buildAndExpand(request.getKey(), request.getTileMatrix(), request.getTileRow(), request.getTileCol(), request.getTileType())
+                .path("/req/wmts/1.0.0/{key}/{layer}/{tileMatrix}/{tileRow}/{tileCol}.{tileType}")
+                .buildAndExpand(request.getKey(), request.getLayer() ,request.getTileMatrix(), request.getTileRow(), request.getTileCol(), request.getTileType())
                 .toUri();
 
         log.info("Request URI: {}", uri);

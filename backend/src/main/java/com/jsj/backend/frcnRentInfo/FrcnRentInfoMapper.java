@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -53,6 +54,9 @@ public class FrcnRentInfoMapper {
      */
     public List<FrcnRentInfo> apiToEntity(FrcnRentInfoApiResponse apiResponse) {
         List<FrcnRentInfoApiResponse.Response.Body.Item> items = apiResponse.getResponse().getBody().getItems();
+        if(items == null || items.isEmpty()) {
+            return emptyList();
+        }
         return items.stream().map(item -> FrcnRentInfo.builder()
                         .officeNm(item.getOfficeNm())
                         .officePhoneNumber(item.getOfficePhoneNumber())

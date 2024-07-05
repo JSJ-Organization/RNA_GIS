@@ -8,8 +8,8 @@ const Input = ({title}) => {
   const [formVisible, setFormVisible] = useState(false);
   const [address, setAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState([]); 
-  const [modalVisible, setModalVisible] = useState(false); 
+  const [results, setResults] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [selectedResult, setSelectedResult] = useState(null);
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
@@ -50,7 +50,8 @@ const Input = ({title}) => {
       setIsLoading(true);
       setResults([]);
       try {
-        const tempUrl = `/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
+
+        const tempUrl = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
         const response = await fetch(tempUrl);
         const data = await response.json();
         setResults(data.vworldSearchResponses);
@@ -101,65 +102,65 @@ const Input = ({title}) => {
 
 
   return (
-    <>
-      <div id="input-top-container">
-        <div ref={containerRef} className={`c-form-container ${formVisible ? 'form-visible' : ''}`}>
-          <div className="c-form">
-            <input
-              className="c-form-input"
-              placeholder="주소입력"
-              type="text"
-              required
-              ref={inputRef}
-              onKeyDown={handleKeyPress}
-              disabled={isLoading}
-            />
-            <div className="c-form-button-label" onClick={sendAddress}>
-              <button
-                className="c-form-button"
-                type="button"
-                ref={buttonRef}
-                disabled={isLoading}
-              >
-                {isLoading ? <div className="c-form-spinner"></div> : '검색'}
-              </button>
+      <>
+        <div id="input-top-container">
+          <div ref={containerRef} className={`c-form-container ${formVisible ? 'form-visible' : ''}`}>
+            <div className="c-form">
+              <input
+                  className="c-form-input"
+                  placeholder="주소입력"
+                  type="text"
+                  required
+                  ref={inputRef}
+                  onKeyDown={handleKeyPress}
+                  disabled={isLoading}
+              />
+              <div className="c-form-button-label" onClick={sendAddress}>
+                <button
+                    className="c-form-button"
+                    type="button"
+                    ref={buttonRef}
+                    disabled={isLoading}
+                >
+                  {isLoading ? <div className="c-form-spinner"></div> : '검색'}
+                </button>
+              </div>
+              <div
+                  className="c-form-welcome"
+                  onClick={handleWelcomeClick}
+              >{title}<span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
             </div>
-            <div
-              className="c-form-welcome"
-              onClick={handleWelcomeClick}
-            >{title}<span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
-          </div>
-          {results.length > 0 && (
-            <div className='dropdown-position'>
-              <ul className='dropdown'>
-              {results.map((result, index) => (
-                  <div key={index} className='dropdown-item' onClick={() => findResult(result.id)}>
-                    {result.id === 0 ? (
-                      <div className='dropdown-text'>
-                        <li>검색 결과가 없습니다</li>
-                      </div>
-                    ) : (
-                      <>
-                        <div className='dropdown-text'>
-                          <li>{result.roadNameAddress.road}</li>
-                          <li>{result.parcelAddress}</li>
+            {results.length > 0 && (
+                <div className='dropdown-position'>
+                  <ul className='dropdown'>
+                    {results.map((result, index) => (
+                        <div key={index} className='dropdown-item' onClick={() => findResult(result.id)}>
+                          {result.id === 0 ? (
+                              <div className='dropdown-text'>
+                                <li>검색 결과가 없습니다</li>
+                              </div>
+                          ) : (
+                              <>
+                                <div className='dropdown-text'>
+                                  <li>{result.roadNameAddress.road}</li>
+                                  <li>{result.parcelAddress}</li>
+                                </div>
+                                <div className='search-icon'><FontAwesomeIcon icon={faSearch} /></div>
+                              </>
+                          )}
                         </div>
-                        <div className='search-icon'><FontAwesomeIcon icon={faSearch} /></div>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </ul>
-            </div>
-          )}
+                    ))}
+                  </ul>
+                </div>
+            )}
+          </div>
         </div>
-      </div>
-      <Modal 
-        modalVisible={modalVisible}
-        selectedResult={selectedResult}
-        closeModal={closeModal}
-      />
-    </>
+        <Modal
+            modalVisible={modalVisible}
+            selectedResult={selectedResult}
+            closeModal={closeModal}
+        />
+      </>
   );
 };
 
