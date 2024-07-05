@@ -107,7 +107,6 @@ const Input = () => {
     }
     const result = results.find((item) => item.id === id);
     if (result) {
-      console.log('result : ' + result);
       setSelectedResult(result);
       setModalVisible(true);
     } else {
