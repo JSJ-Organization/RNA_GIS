@@ -1,5 +1,7 @@
-package com.jsj.backend.vworld.search;
+package com.jsj.backend.vworld.search.dto;
 
+import com.jsj.backend.vworld.search.dto.VWorldSearchApiResponse;
+import com.jsj.backend.vworld.search.dto.VWorldSearchResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

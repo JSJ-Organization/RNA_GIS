@@ -1,5 +1,8 @@
 package com.jsj.backend.vworld.wmts;
 
+import com.jsj.backend.vworld.wmts.dto.VWorldWMTSApiRequest;
+import com.jsj.backend.vworld.wmts.dto.VWorldWMTSMapper;
+import com.jsj.backend.vworld.wmts.httpClient.VWorldWMTSApiClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

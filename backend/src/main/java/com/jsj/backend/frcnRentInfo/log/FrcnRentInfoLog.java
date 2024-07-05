@@ -1,10 +1,9 @@
-package com.jsj.backend.vworld;
+package com.jsj.backend.frcnRentInfo.log;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class VWorldLog {
+public class FrcnRentInfoLog {
     @Id
     @GeneratedValue
     private Long id;

@@ -1,5 +1,6 @@
-package com.jsj.backend.vworld.wmts;
+package com.jsj.backend.vworld.wmts.dto;
 
+import com.jsj.backend.vworld.wmts.dto.VWorldWMTSApiRequest;
 import org.springframework.stereotype.Service;
 
 @Service

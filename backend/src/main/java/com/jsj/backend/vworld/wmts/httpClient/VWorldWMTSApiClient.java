@@ -1,5 +1,6 @@
-package com.jsj.backend.vworld.wmts;
+package com.jsj.backend.vworld.wmts.httpClient;
 
+import com.jsj.backend.vworld.wmts.dto.VWorldWMTSApiRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;

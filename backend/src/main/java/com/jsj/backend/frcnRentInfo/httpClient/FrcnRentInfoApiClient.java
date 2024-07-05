@@ -1,5 +1,7 @@
-package com.jsj.backend.frcnRentInfo;
+package com.jsj.backend.frcnRentInfo.httpClient;
 
+import com.jsj.backend.frcnRentInfo.dto.FrcnRentInfoApiRequest;
+import com.jsj.backend.frcnRentInfo.dto.FrcnRentInfoApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

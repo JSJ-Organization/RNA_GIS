@@ -1,4 +1,4 @@
-package com.jsj.backend.vworld.search;
+package com.jsj.backend.vworld.search.dto;
 
 import lombok.*;
 
