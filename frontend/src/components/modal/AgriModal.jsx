@@ -21,9 +21,9 @@ const AgriModal = ({ modalVisible, selectedResult, closeModal }) => {
                 {selectedResult.parcelAddress}
               </span>
             </div>
-            <Link to={`/coordinate/map?x=${selectedResult.x}&y=${selectedResult.y}`}>
+            <Link to={`/agricultural/map?x=${selectedResult.x}&y=${selectedResult.y}`}>
               <div className='map-Link'>
-                <FontAwesomeIcon icon={faMapLocationDot} /> 지도로 자세히 보기
+                <FontAwesomeIcon icon={faMapLocationDot} /> 주변 농기계 임대 정보 보기
               </div>
             </Link>
           </div>
