@@ -5,6 +5,7 @@ import com.jsj.backend.frcnRentInfo.FrcnRentInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -34,6 +35,7 @@ public class FrcnRentInfoBatchConfig {
      * 데이터를 읽어오는 작업을 정의
      * @return ItemReader 객체
      */
+    @JobScope
     @Bean(name = "frcnRentInfoReader")
     public ItemReader<FrcnRentInfo> reader() {
         return new ItemReader<FrcnRentInfo>() {
