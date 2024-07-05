@@ -143,7 +143,7 @@ const Input = ({title}) => {
                           ) : (
                               <>
                                 <div className='dropdown-text'>
-                                  <li>{result.roadNameAddress.road}</li>
+                                  <li>{result.roadNameAddress}</li>
                                   <li>{result.parcelAddress}</li>
                                 </div>
                                 <div className='search-icon'><FontAwesomeIcon icon={faSearch} /></div>
