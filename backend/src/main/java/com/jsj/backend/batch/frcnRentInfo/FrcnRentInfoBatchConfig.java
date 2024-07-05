@@ -27,6 +27,7 @@ public class FrcnRentInfoBatchConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager; // 트랜잭션 관리자 객체
+    private final FrcnRentInfoJobExecutionListener frcnRentInfoJobExecutionListener;
     private final FrcnRentInfoService frcnRentInfoService;
     private final JdbcTemplate jdbcTemplate;
 
@@ -87,7 +88,7 @@ public class FrcnRentInfoBatchConfig {
     public Job runJob() {
         return new JobBuilder("importFrcnRentInfo", jobRepository)
                 .start(importStep()) // .next 를 사용하여 다음 작업 수행할 수도 있음
-//                .listener(customJobExecutionListener) Job 전후 처리 작업 정의
+                .listener(frcnRentInfoJobExecutionListener) // Job 전후 처리 작업 정의
                 .build();
     }
 }
