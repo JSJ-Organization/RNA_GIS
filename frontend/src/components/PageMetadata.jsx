@@ -1,26 +1,18 @@
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
+import { usePath } from '../PathContext';
+import { pathData } from '../pathData'
 
-const PageMetadata = ({ meta }) => {
-    const {
-        title, 
-        description,
-    } = meta;
+const PageMetadata = () => {
+
+    const { id } = usePath();
+    const metaData = pathData[id];
 
     return (
         <Helmet>
-            <title>{title}</title>
-            <meta name="description" content={description} />
+            <title>{metaData.title}</title>
+            <meta name="description" content={metaData.description} />
         </Helmet>
     );
 }
-
-PageMetadata.propTypes = {
-    meta: PropTypes.shape({
-      title: PropTypes.string,
-      description: PropTypes.string,
-    //   keywords: PropTypes.string,
-    }).isRequired,
-  };
 
 export default PageMetadata;

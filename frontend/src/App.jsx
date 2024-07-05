@@ -5,18 +5,31 @@ import CoordInput from "./views/coord/CoordInput";
 import CoordMap from "./views/coord/CoordMap";
 import AgriInput from "./views/agri/AgriInput";
 import AgriMap from "./views/agri/AgriMap";
+import { PathProvider } from "./PathContext";
 
 function App() {
 
   return (
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<HomeView />} />
-          <Route path='/coordinate' element={<BasicLayout />} >
+          <Route path='/' element={
+            <PathProvider value={{ id: 'home' }}>
+              <HomeView />
+            </PathProvider>
+            } />
+          <Route path='/coordinate' element={
+            <PathProvider value={{ id: 'coordinate' }}>
+              <BasicLayout />
+            </PathProvider>
+            } >
             <Route index element={<CoordInput />} />
             <Route path='map' element={<CoordMap />} />
           </Route>
-          <Route path='/agricultural' element={<BasicLayout />} >
+          <Route path='/agricultural' element={
+            <PathProvider value={{ id: 'agricultural' }}>
+              <BasicLayout />
+            </PathProvider>
+          } >
             <Route index element={<AgriInput />} />
             <Route path='map' element={<AgriMap />} />
           </Route>

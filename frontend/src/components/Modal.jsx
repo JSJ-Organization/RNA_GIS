@@ -91,9 +91,9 @@ Modal.propTypes = {
     selectedResult: PropTypes.shape({
         roadNameAddress: PropTypes.string,
         parcelAddress: PropTypes.string,
-        zipcode: PropTypes.string,
-        x: PropTypes.string,
-        y: PropTypes.string
+        zipcode: PropTypes.number,
+        x: PropTypes.number,
+        y: PropTypes.number
     }),
     closeModal: PropTypes.func.isRequired
 };

@@ -9,16 +9,10 @@ const AgriInput = () => {
       '--main-color-200': '#A8FFC9',
       '--main-color-300': '#6be299',
     });
-
-    const metaData = {
-      title: '농기계 임대 검색',
-      description: '농기계 임대 검색',
-    };
-
   return (
     <>
-      <PageMetadata meta={metaData} />
-      <Input title={metaData.title} />
+      <PageMetadata />
+      <Input />
     </>
   )
 }

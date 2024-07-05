@@ -3,8 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faHandPointer } from '@fortawesome/free-solid-svg-icons';
 import Modal from './Modal';
 import PropTypes from 'prop-types';
+import { usePath } from '../PathContext';
+import { pathData } from '../pathData';
 
-const Input = ({title}) => {
+const Input = () => {
+
+  const { id } = usePath();
+  const metaData = pathData[id];
+
   const [formVisible, setFormVisible] = useState(false);
   const [address, setAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -50,18 +56,19 @@ const Input = ({title}) => {
       setIsLoading(true);
       setResults([]);
       try {
-
         const tempUrl = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
         const response = await fetch(tempUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         setResults(data.vworldSearchResponses);
         console.log(data.vworldSearchResponses);
-        timeoutFocus(inputRef);
       } catch (error) {
-        setResults([{id:0}]);
-        timeoutFocus(inputRef);
+        setResults([{ id: 0 }]);
         console.error('Error fetching data:', error);
       } finally {
+        timeoutFocus(inputRef);
         setIsLoading(false);
       }
     }
@@ -128,7 +135,7 @@ const Input = ({title}) => {
               <div
                   className="c-form-welcome"
                   onClick={handleWelcomeClick}
-              >{title}<span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
+              >{metaData.title}<span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
             </div>
             {results.length > 0 && (
                 <div className='dropdown-position'>
@@ -142,7 +149,7 @@ const Input = ({title}) => {
                           ) : (
                               <>
                                 <div className='dropdown-text'>
-                                  <li>{result.roadNameAddress.road}</li>
+                                  <li>{result.roadNameAddress}</li>
                                   <li>{result.parcelAddress}</li>
                                 </div>
                                 <div className='search-icon'><FontAwesomeIcon icon={faSearch} /></div>
@@ -163,9 +170,5 @@ const Input = ({title}) => {
       </>
   );
 };
-
-Input.propTypes = {
-  title: PropTypes.string
-}
 
 export default Input;
