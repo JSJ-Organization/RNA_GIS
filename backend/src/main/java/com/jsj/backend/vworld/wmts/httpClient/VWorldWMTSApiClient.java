@@ -15,10 +15,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * VWorld 검색 API 클라이언트 클래스.
  * 이 클래스는 VWorld API를 호출하여 검색 요청을 처리합니다.
- *
- * @Component 애노테이션을 사용하여 스프링 컨텍스트에서 빈으로 관리됩니다.
- * @RequiredArgsConstructor는 final 필드에 대한 생성자를 자동으로 생성합니다.
- * @Slf4j는 로깅을 위한 로거를 제공합니다.
  */
 @Component
 @RequiredArgsConstructor
