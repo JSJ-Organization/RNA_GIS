@@ -6,11 +6,15 @@ import CoordMapView from "./views/map/CoordMapView";
 import AgriInputView from "./views/input/AgriInputView";
 import AgriMapView from "./views/map/AgriMapView";
 import { PathProvider } from "./contexts/PathContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
+import Loader from "./components/Loader";
 
 function App() {
 
   return (
+    <LoadingProvider>
       <BrowserRouter>
+        <Loader />
         <Routes>
           <Route path='/' element={
             <PathProvider value={{ id: 'home' }}>
@@ -35,6 +39,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+    </LoadingProvider>
   );
 }
 
