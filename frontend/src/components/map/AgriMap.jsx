@@ -77,24 +77,6 @@ const AgriMap = () => {
       }),
     });
 
-    // 마커 생성
-    const marker = new Feature({
-      geometry: new Point(fromLonLat([x, y])),
-    });
-
-    // 마커 스타일 설정
-    marker.setStyle(
-      new Style({
-        image: new Icon({
-          src: markerImg,
-          scale: 1,
-          anchor: [0.5, 1],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'fraction',
-        }),
-      })
-    );
-
     // 원 생성 (반경 : raidus미터)
     const circle = new Feature({
       geometry: new Circle(fromLonLat([x, y]), radius),
@@ -114,15 +96,6 @@ const AgriMap = () => {
     );
 
     // 벡터 소스 및 레이어 생성
-    const vectorSource = new VectorSource({
-      features: [marker],
-    });
-
-    const markerLayer = new VectorLayer({
-      title: '내 위치 마커',
-      source: vectorSource,
-    });
-
     const circleSource = new VectorSource({
       features: [circle],
     });
@@ -143,18 +116,12 @@ const AgriMap = () => {
       style: new Style({
         image: new Icon({
           src: markerImg,
-          scale: 0.8,
+          scale: 1,
           anchor: [0.5, 1],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
         }),
       }),
-    });
-
-    // 마커 그룹 생성
-    const markerGroup = new Group({
-      title: '마커',
-      layers: [markerLayer],
     });
 
     // 반경 그룹 생성
@@ -172,7 +139,7 @@ const AgriMap = () => {
     // 지도 뷰 설정
     const view = new View({
       center: fromLonLat([x, y]),
-      zoom: 16,
+      zoom: 11,
     });
     viewRef.current = view;  // view를 ref에 저장
 
@@ -187,7 +154,7 @@ const AgriMap = () => {
     // 지도 생성
     const map = new OlMap({
       controls: defaultControls().extend([layerSwitcher]),
-      layers: [vworldLayer, markerGroup, circleGroup, rentInfoGroup],
+      layers: [vworldLayer, circleGroup, rentInfoGroup],
       view: view,
     });
 

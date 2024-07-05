@@ -74,7 +74,11 @@ const Input = () => {
   
       const data = await response.json();
       console.log(data);
-      setResults(getResults[id](data));
+      if(!data.totalData){
+        setResults([{ id: 0 }]);
+      }else {
+        setResults(getResults[id](data).slice(0,5));
+      }
     } catch (error) {
       setResults([{ id: 0 }]);
       console.error('Error fetching data:', error);
