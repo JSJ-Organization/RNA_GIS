@@ -13,12 +13,12 @@ import Circle from 'ol/geom/Circle';
 import { Style, Icon, Fill, Stroke } from 'ol/style';
 import LayerSwitcher from 'ol-layerswitcher';
 import Group from 'ol/layer/Group';
+import Overlay from 'ol/Overlay';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
 import markerImg from '../../assets/images/marker.png';
 import { useLoading } from '../../contexts/LoadingContext';
 
 const AgriMap = () => {
-  
   const location = useLocation();
 
   // URLSearchParams를 사용하여 쿼리 파라미터를 파싱
@@ -28,8 +28,11 @@ const AgriMap = () => {
 
   const { showLoading, hideLoading } = useLoading();
   const [radius, setRadius] = useState(0);
-
+  const [rentInfoMarkers, setRentInfoMarkers] = useState([]);
+  const [popupContent, setPopupContent] = useState(null);
   const mapRef = useRef(null);
+  const popupRef = useRef(null);
+  const viewRef = useRef(null);  // View를 참조하기 위한 ref 추가
 
   const getAgriData = async (distance) => {
     try {
@@ -40,7 +43,18 @@ const AgriMap = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setRadius(distance / 2);
+      setRadius(distance);
+
+      // Rent Info Markers 생성
+      const markers = data.frcnRentInfoResponses.map(item => {
+        const feature = new Feature({
+          geometry: new Point(fromLonLat([item.x, item.y])),
+        });
+        feature.setProperties(item);
+        return feature;
+      });
+
+      setRentInfoMarkers(markers);
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -50,7 +64,7 @@ const AgriMap = () => {
   };
 
   useEffect(() => {
-    getAgriData(2000);
+    getAgriData(20000);
   }, [x, y]);
 
   useEffect(() => {
@@ -118,6 +132,25 @@ const AgriMap = () => {
       source: circleSource,
     });
 
+    // Rent Info 벡터 소스 및 레이어 생성
+    const rentInfoSource = new VectorSource({
+      features: rentInfoMarkers,
+    });
+
+    const rentInfoLayer = new VectorLayer({
+      title: '농기계 대여 정보',
+      source: rentInfoSource,
+      style: new Style({
+        image: new Icon({
+          src: markerImg,
+          scale: 0.8,
+          anchor: [0.5, 1],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'fraction',
+        }),
+      }),
+    });
+
     // 마커 그룹 생성
     const markerGroup = new Group({
       title: '마커',
@@ -130,11 +163,18 @@ const AgriMap = () => {
       layers: [circleLayer],
     });
 
+    // 농기계 대여 정보 그룹 생성
+    const rentInfoGroup = new Group({
+      title: '농기계 대여 정보',
+      layers: [rentInfoLayer],
+    });
+
     // 지도 뷰 설정
     const view = new View({
       center: fromLonLat([x, y]),
       zoom: 16,
     });
+    viewRef.current = view;  // view를 ref에 저장
 
     // 레이어 스위처 생성
     const layerSwitcher = new LayerSwitcher({
@@ -147,8 +187,31 @@ const AgriMap = () => {
     // 지도 생성
     const map = new OlMap({
       controls: defaultControls().extend([layerSwitcher]),
-      layers: [vworldLayer, markerGroup, circleGroup],
+      layers: [vworldLayer, markerGroup, circleGroup, rentInfoGroup],
       view: view,
+    });
+
+    // 팝업 생성
+    const popup = new Overlay({
+      element: popupRef.current,
+      positioning: 'bottom-center',
+      stopEvent: false,
+      offset: [0, -50],
+    });
+    map.addOverlay(popup);
+
+    // 마커 클릭 이벤트 설정
+    map.on('click', function(evt) {
+      map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+        if (feature.getGeometry().getType() === 'Point' && feature.get('x') && feature.get('y')) {
+          const coordinates = feature.getGeometry().getCoordinates();
+          const properties = feature.getProperties();
+          console.log(properties);
+          setPopupContent(properties);
+          popup.setPosition(coordinates);
+          viewRef.current.animate({ center: coordinates, duration: 500 });  // 지도 중심 이동 애니메이션 추가
+        }
+      });
     });
 
     map.setTarget(mapRef.current || '');
@@ -156,11 +219,20 @@ const AgriMap = () => {
     return () => {
       map.setTarget('');
     };
-  }, [radius, x, y]);
+  }, [radius, x, y, rentInfoMarkers]);
 
   return (
     <div>
       <div id='map' ref={mapRef} />
+      <div ref={popupRef} className="ol-popup">
+        {popupContent && (
+          <div>
+            <h3>{popupContent.officeNm}</h3>
+            <p>{popupContent.phoneNumber}</p>
+            {/* 추가 정보 표시 */}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
