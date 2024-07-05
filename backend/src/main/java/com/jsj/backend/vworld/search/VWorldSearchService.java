@@ -63,7 +63,10 @@ public class VWorldSearchService {
     private void logVWorldSearchApiResponse(String query, VWorldSearchApiResponse response) {
         String errorCode = null;
         String errorText = null;
-        if (response.getResponse().getError() != null) {
+        if(response.getResponse() == null) {
+            errorCode = "NOT_FOUND";
+            errorText = "데이터가 존재하지 않습니다";
+        } else if (response.getResponse().getError() != null) {
             errorCode = response.getResponse().getError().getCode();
             errorText = response.getResponse().getError().getText();
         }

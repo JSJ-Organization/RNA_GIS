@@ -81,6 +81,9 @@ public class FrcnRentInfoMapper {
                 .collect(toList());
     }
     public List<FrcnRentInfoResponse> entityToResponse(List<FrcnRentInfo> entities) {
+        if(entities == null || entities.isEmpty()) {
+            return emptyList();
+        }
         return entities.stream()
                 .map(entity -> FrcnRentInfoResponse.builder()
                         .x(entity.getGeometry().getCoordinate().getX())
