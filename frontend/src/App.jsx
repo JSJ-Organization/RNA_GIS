@@ -5,7 +5,7 @@ import CoordInputView from "./views/input/CoordInputView";
 import CoordMapView from "./views/map/CoordMapView";
 import AgriInputView from "./views/input/AgriInputView";
 import AgriMapView from "./views/map/AgriMapView";
-import { PathProvider } from "./PathContext";
+import { PathProvider } from "./contexts/PathContext";
 
 function App() {
 

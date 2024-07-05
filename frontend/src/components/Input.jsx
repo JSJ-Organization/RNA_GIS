@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faHandPointer } from '@fortawesome/free-solid-svg-icons';
-import { usePath } from '../PathContext';
+import { usePath } from '../contexts/PathContext';
 import { pathData } from '../pathData';
 import AgriModal from './modal/AgriModal';
 import CoordModal from './modal/CoordModal';
@@ -56,8 +56,8 @@ const Input = () => {
       setIsLoading(true);
       setResults([]);
       try {
-        const tempUrl = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
-        const response = await fetch(tempUrl);
+        const url = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
