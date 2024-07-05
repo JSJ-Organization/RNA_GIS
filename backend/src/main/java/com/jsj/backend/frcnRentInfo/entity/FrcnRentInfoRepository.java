@@ -38,6 +38,8 @@ public interface FrcnRentInfoRepository extends JpaRepository<FrcnRentInfo, Long
 
     List<FrcnRentInfo> findAllByBatchDateAndLnmadrContaining(String batchDate, String lnmadr);
 
+    List<FrcnRentInfo> findAllByBatchDateAndRdnmadrContainingOrLnmadrContaining(String batchDate, String rdnmadr, String lnmadr);
+
     @Query(value = "SELECT * FROM frcn_rent_info " +
             "WHERE ST_DWithin(" +
             "ST_Transform(geometry, 32633), " +

@@ -105,6 +105,20 @@ public class FrcnRentInfoService {
     }
 
     /**
+     * 최신 배치 날짜와 주어진 주소 키워드를 포함하는 농기계 임대 정보를 검색합니다.
+     *
+     * @param keyword 주소 키워드
+     * @return FrcnRentInfo 엔티티 리스트
+     */
+    public List<FrcnRentInfo> findByBatchDateAndKeywordContaining(String keyword) {
+        checkEmpty(keyword);
+        String todayDateString = DateUtil.getTodayDateString();
+        List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndRdnmadrContainingOrLnmadrContaining(todayDateString, keyword, keyword);
+        logFrcnRentInfoResponse("findByBatchDateAndKeywordContaining", new HashMap<>(), response);
+        return response;
+    }
+
+    /**
      * 최신 배치 날짜와 주어진 사업소명을 포함하는 농기계 임대 정보를 검색합니다.
      *
      * @param officeNm 사업소명

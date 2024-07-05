@@ -115,6 +115,25 @@ public class FrcnRentInfoController {
     }
 
     /**
+     * 주어진 주소 키워드를 포함하는 사업소를 검색하는 HTTP GET 요청을 처리합니다.
+     *
+     * @param keyword 주소 키워드
+     * @return 검색된 사업소 정보를 담고 있는 ResponseEntity 객체
+     */
+    @Operation(summary = "지번 주소 포함하여 사업소 검색", description = "제공된 지번 주소를 포함하여 사업소를 검색합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 처리됨"),
+            @ApiResponse(responseCode = "400", description = "잘못된 지번 주소 파라미터"),
+            @ApiResponse(responseCode = "500", description = "내부 서버 오류")
+    })
+    @GetMapping("/api/v1/search/office-address")
+    public ResponseEntity<?> searchOfficeWithKeyword(
+            @Parameter(description = "주소 키워드", example = "서울") @RequestParam(name = "keyword") String keyword
+    ) {
+        return ResponseEntity.ok(service.findByBatchDateAndKeywordContaining(keyword));
+    }
+
+    /**
      * 주어진 사업소 이름을 포함하는 사업소를 검색하는 HTTP GET 요청을 처리합니다.
      *
      * @param officeNm 사업소 이름

@@ -95,6 +95,17 @@ public class SearchService {
     }
 
     /**
+     * 최신 배치 날짜와 주어진 주소 키워드를 포함하는 농기계 임대 정보를 검색합니다.
+     *
+     * @param keyword 주소 키워드
+     * @return SearchResponse 농기계 임대 정보 검색 결과를 담고 있는 응답 객체
+     */
+    public SearchResponse findByBatchDateAndKeywordContaining(String keyword) {
+        List<FrcnRentInfo> entities = frcnRentInfoService.findByBatchDateAndKeywordContaining(keyword);
+        return mapper.frcnRentInfoToSearch(entities, keyword, 1);
+    }
+
+    /**
      * 최신 배치 날짜와 주어진 사업소명을 포함하는 농기계 임대 정보를 검색합니다.
      *
      * @param officeNm 사업소명
