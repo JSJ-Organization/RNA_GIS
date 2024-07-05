@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Map as OlMap, View } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import TileLayer from 'ol/layer/Tile';
-import { OSM, XYZ } from 'ol/source';
+import { XYZ } from 'ol/source';
 import { defaults as defaultControls } from 'ol/control';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -25,31 +25,11 @@ const AgriMap = () => {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    // OSM 지도 기본 레이어
-    const osmLayer = new TileLayer({
-      title: '2D 지도 (OSM)',
-      type: 'base',
-      visible: true,
-      source: new OSM({ attributions: '' })
-    });
 
     // Vworld 지도 기본 레이어 api 호출
     const vworldLayer  = new TileLayer({
-      title: '2D 지도 (Vworld)',
-      type: 'base',
-      visible: false,
       source: new XYZ({
         url : `http://localhost:8080/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
-      })
-    })
-
-    // Vworld 지도 위성 레이어 api 호출
-    const vworldSateLayer = new TileLayer({
-      title: '위성지도 (Vworld)',
-      type: 'base',
-      visible: false,
-      source: new XYZ({
-        url : `http://localhost:8080/api/v1/search/wmts/Satellite/{z}/{y}/{x}.jpeg`,
       })
     })
 
@@ -97,7 +77,7 @@ const AgriMap = () => {
     // 지도 생성
     const map = new OlMap({
       controls: defaultControls().extend([layerSwitcher]),
-      layers: [osmLayer, vworldLayer, vworldSateLayer, markerLayer],
+      layers: [vworldLayer, markerLayer],
       view: view
     });
 
