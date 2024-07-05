@@ -4,7 +4,7 @@ import { faThumbsUp, faMapLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Modal = ({ modalVisible, selectedResult, closeModal }) => {
+const AgriModal = ({ modalVisible, selectedResult, closeModal }) => {
   
     const [copiedSpan, setCopiedSpan] = useState(null);
     const copyToClipboard = async (text) => {
@@ -86,7 +86,7 @@ const Modal = ({ modalVisible, selectedResult, closeModal }) => {
   );
 }
 
-Modal.propTypes = {
+AgriModal.propTypes = {
     modalVisible: PropTypes.bool.isRequired,
     selectedResult: PropTypes.shape({
         roadNameAddress: PropTypes.string,
@@ -99,4 +99,4 @@ Modal.propTypes = {
 };
 
 
-export default Modal;
+export default AgriModal;

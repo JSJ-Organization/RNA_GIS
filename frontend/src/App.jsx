@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeView from './views/HomeView';
 import BasicLayout from "./layout/BasicLayout";
-import CoordInput from "./views/coord/CoordInput";
-import CoordMap from "./views/coord/CoordMap";
-import AgriInput from "./views/agri/AgriInput";
-import AgriMap from "./views/agri/AgriMap";
+import CoordInput from "./views/input/CoordInput";
+import CoordMap from "./views/map/CoordMap";
+import AgriInput from "./views/input/AgriInput";
+import AgriMap from "./views/map/AgriMap";
 import { PathProvider } from "./PathContext";
 
 function App() {

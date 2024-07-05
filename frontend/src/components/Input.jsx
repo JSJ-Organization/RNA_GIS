@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faHandPointer } from '@fortawesome/free-solid-svg-icons';
-import Modal from './Modal';
-import PropTypes from 'prop-types';
 import { usePath } from '../PathContext';
 import { pathData } from '../pathData';
+import AgriModal from './modal/ArgiModal';
+import CoordModal from './modal/CoordModal';
 
 const Input = () => {
 
@@ -106,7 +106,12 @@ const Input = () => {
     }
   };
 
-
+  const modalProps = {
+    modalVisible: modalVisible,
+    selectedResult: selectedResult,
+    closeModal: closeModal,
+  };
+  
 
   return (
       <>
@@ -162,11 +167,9 @@ const Input = () => {
             )}
           </div>
         </div>
-        <Modal
-            modalVisible={modalVisible}
-            selectedResult={selectedResult}
-            closeModal={closeModal}
-        />
+        {id === 'agricultural' && <AgriModal {...modalProps} />}
+        {id === 'coordinate' && <CoordModal {...modalProps} />}
+
       </>
   );
 };
