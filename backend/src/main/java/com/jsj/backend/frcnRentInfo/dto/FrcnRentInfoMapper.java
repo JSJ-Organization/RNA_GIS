@@ -93,6 +93,7 @@ public class FrcnRentInfoMapper {
         }
         return entities.stream()
                 .map(entity -> FrcnRentInfoResponse.builder()
+                        .id(entity.getId())
                         .x(entity.getGeometry().getCoordinate().getX())
                         .y(entity.getGeometry().getCoordinate().getY())
                         .roadNameAddress(entity.getRdnmadr())
