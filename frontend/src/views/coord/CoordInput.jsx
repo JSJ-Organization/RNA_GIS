@@ -11,15 +11,10 @@ const CoordInput = () => {
       '--main-color-300': '#ffcccc',
     });
 
-    const metaData = {
-      title: "좌표 변환기",
-      description : "좌표 변환기",
-    }
-  
     return (
       <>
-        <PageMetadata meta={metaData} />
-        <Input title={metaData.title} />
+        <PageMetadata />
+        <Input />
       </>
     )
 }

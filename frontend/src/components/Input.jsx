@@ -3,8 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faHandPointer } from '@fortawesome/free-solid-svg-icons';
 import Modal from './Modal';
 import PropTypes from 'prop-types';
+import { usePath } from '../PathContext';
+import { pathData } from '../pathData';
 
-const Input = ({title}) => {
+const Input = () => {
+
+  const { id } = usePath();
+  const metaData = pathData[id];
+
   const [formVisible, setFormVisible] = useState(false);
   const [address, setAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -129,7 +135,7 @@ const Input = ({title}) => {
               <div
                   className="c-form-welcome"
                   onClick={handleWelcomeClick}
-              >{title}<span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
+              >{metaData.title}<span className='c-form-welcome-icon'><FontAwesomeIcon icon={faHandPointer} /></span></div>
             </div>
             {results.length > 0 && (
                 <div className='dropdown-position'>
@@ -164,9 +170,5 @@ const Input = ({title}) => {
       </>
   );
 };
-
-Input.propTypes = {
-  title: PropTypes.string
-}
 
 export default Input;
