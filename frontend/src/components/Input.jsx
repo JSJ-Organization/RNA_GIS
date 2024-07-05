@@ -50,29 +50,40 @@ const Input = () => {
   };
 
   const sendAddress = async () => {
-    if (inputRef.current.value) {
-      const addressValue = inputRef.current.value;
-      setAddress(addressValue);
-      setIsLoading(true);
-      setResults([]);
-      try {
-        const url = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setResults(data.vworldSearchResponses);
-        console.log(data.vworldSearchResponses);
-      } catch (error) {
-        setResults([{ id: 0 }]);
-        console.error('Error fetching data:', error);
-      } finally {
-        timeoutFocus(inputRef);
-        setIsLoading(false);
-      }
+    if (!inputRef.current.value) return;
+  
+    const addressValue = inputRef.current.value;
+    setAddress(addressValue);
+    setIsLoading(true);
+    setResults([]);
+  
+    const API = {
+      coordinate: (address) => `${metaData.api.input}?query=${address}&page=1`,
+      agricultural: (address) => `${metaData.api.input}?keyword=${address}`
+    };
+  
+    const getResults = {
+      coordinate: (data) => data.vworldSearchResponses,
+      agricultural: (data) => data.frcnRentInfoResponses
+    };
+  
+    try {
+      const url = API[id](addressValue);
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  
+      const data = await response.json();
+      console.log(data);
+      setResults(getResults[id](data));
+    } catch (error) {
+      setResults([{ id: 0 }]);
+      console.error('Error fetching data:', error);
+    } finally {
+      timeoutFocus(inputRef);
+      setIsLoading(false);
     }
   };
+  
 
   const centerContainer = () => {
     if (containerRef.current) {
@@ -149,7 +160,7 @@ const Input = () => {
                         <div key={index} className='dropdown-item' onClick={() => findResult(result.id)}>
                           {result.id === 0 ? (
                               <div className='dropdown-text'>
-                                <li>검색 결과가 없습니다</li>
+                                <li>{metaData.searchException}</li>
                               </div>
                           ) : (
                               <>
