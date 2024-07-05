@@ -16,16 +16,27 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * VWorld 검색 서비스를 제공하는 클래스.
+ * 이 클래스는 VWorld 검색 API를 호출하고 응답을 처리하는 기능을 제공합니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class VWorldSearchService {
 
     private final VWorldLogRepository vWorldLogRepository; // VWorld 로그 저장소
-    private final VWorldSearchApiClient vWorldSearchApiClient;
+    private final VWorldSearchApiClient vWorldSearchApiClient; // VWorld 검색 API 클라이언트
+
     @Value("${api.vworld.key}")
     private String API_KEY_VWORLD; // 외부 설정 파일에서 주입받는 VWorld API 키
 
+    /**
+     * VWorld 검색 API 응답을 VWorldSearchResponse 리스트로 변환합니다.
+     *
+     * @param apiResponse VWorld 검색 API 응답 객체
+     * @return VWorldSearchResponse 리스트
+     */
     public List<VWorldSearchResponse> apiToResponse(VWorldSearchApiResponse apiResponse) {
         List<VWorldSearchApiResponse.Response.Result.Item> items = apiResponse.getResponse().getResult().getItems();
 
@@ -63,7 +74,7 @@ public class VWorldSearchService {
     private void logVWorldSearchApiResponse(String query, VWorldSearchApiResponse response) {
         String errorCode = null;
         String errorText = null;
-        if(response.getResponse() == null) {
+        if (response.getResponse() == null) {
             errorCode = "NOT_FOUND";
             errorText = "데이터가 존재하지 않습니다";
         } else if (response.getResponse().getError() != null) {
@@ -78,6 +89,13 @@ public class VWorldSearchService {
                 .build());
     }
 
+    /**
+     * 주어진 쿼리와 페이지 번호로 VWorld 검색 API를 호출하여 응답을 반환합니다.
+     *
+     * @param query 검색할 쿼리
+     * @param page  페이지 번호
+     * @return VWorldSearchApiResponse 응답 객체
+     */
     public VWorldSearchApiResponse getPointWithPage(String query, Integer page) {
         log.info("query: {}, page: {}", query, page);
         checkEmpty(query);
@@ -93,6 +111,12 @@ public class VWorldSearchService {
         return response;
     }
 
+    /**
+     * 주어진 쿼리로 VWorld 검색 API를 호출하여 응답을 반환합니다.
+     *
+     * @param query 검색할 쿼리
+     * @return VWorldSearchApiResponse 응답 객체
+     */
     public VWorldSearchApiResponse getPoint(String query) {
         log.info("query: {}", query);
         checkEmpty(query);

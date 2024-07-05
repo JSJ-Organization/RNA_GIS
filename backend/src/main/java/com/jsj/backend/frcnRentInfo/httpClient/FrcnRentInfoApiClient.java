@@ -39,14 +39,6 @@ public class FrcnRentInfoApiClient {
                 .queryParam("pageNo", request.getPageNo())
                 .queryParam("numOfRows", request.getNumOfRows())
                 .queryParam("type", request.getType())
-//                .queryParam("size", request.getSize())
-//                .queryParam("page", request.getPage())
-//                .queryParam("query", request.getQuery())
-//                .queryParam("type", request.getType())
-//                .queryParam("category", request.getCategory())
-//                .queryParam("format", request.getFormat())
-//                .queryParam("errorformat", request.getErrorFormat())
-//                .queryParam("key", request.getKey())
                 .build(false) // false로 설정하여 자동 인코딩을 비활성화
                 .toUriString());
 

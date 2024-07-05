@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
  */
 @Service
 public class FrcnRentInfoMapper {
+
     /**
      * EPSG:4326 좌표계 SRID.
      */
@@ -46,7 +47,6 @@ public class FrcnRentInfoMapper {
                 .orElse(null);
     }
 
-
     /**
      * API 응답 데이터를 엔티티 리스트로 변환합니다.
      *
@@ -55,7 +55,7 @@ public class FrcnRentInfoMapper {
      */
     public List<FrcnRentInfo> apiToEntity(FrcnRentInfoApiResponse apiResponse) {
         List<FrcnRentInfoApiResponse.Response.Body.Item> items = apiResponse.getResponse().getBody().getItems();
-        if(items == null || items.isEmpty()) {
+        if (items == null || items.isEmpty()) {
             return emptyList();
         }
         return items.stream().map(item -> FrcnRentInfo.builder()
@@ -80,8 +80,15 @@ public class FrcnRentInfoMapper {
                         .build())
                 .collect(toList());
     }
+
+    /**
+     * 엔티티 리스트를 응답 객체 리스트로 변환합니다.
+     *
+     * @param entities FrcnRentInfo 엔티티 리스트
+     * @return FrcnRentInfoResponse 응답 객체 리스트
+     */
     public List<FrcnRentInfoResponse> entityToResponse(List<FrcnRentInfo> entities) {
-        if(entities == null || entities.isEmpty()) {
+        if (entities == null || entities.isEmpty()) {
             return emptyList();
         }
         return entities.stream()
