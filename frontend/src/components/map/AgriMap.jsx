@@ -20,8 +20,6 @@ import { useLoading } from '../../contexts/LoadingContext';
 
 const AgriMap = () => {
   const location = useLocation();
-
-  // URLSearchParams를 사용하여 쿼리 파라미터를 파싱
   const queryParams = new URLSearchParams(location.search);
   const x = parseFloat(queryParams.get('x'));
   const y = parseFloat(queryParams.get('y'));
@@ -32,7 +30,7 @@ const AgriMap = () => {
   const [popupContent, setPopupContent] = useState(null);
   const mapRef = useRef(null);
   const popupRef = useRef(null);
-  const viewRef = useRef(null);  // View를 참조하기 위한 ref 추가
+  const viewRef = useRef(null);
 
   const getAgriData = async (distance) => {
     try {
@@ -45,7 +43,6 @@ const AgriMap = () => {
       const data = await response.json();
       setRadius(distance);
 
-      // Rent Info Markers 생성
       const markers = data.frcnRentInfoResponses.map(item => {
         const feature = new Feature({
           geometry: new Point(fromLonLat([item.x, item.y])),
@@ -55,7 +52,6 @@ const AgriMap = () => {
       });
 
       setRentInfoMarkers(markers);
-      console.log(data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -70,19 +66,16 @@ const AgriMap = () => {
   useEffect(() => {
     if (radius === 0) return;
 
-    // Vworld 지도 기본 레이어 api 호출
     const vworldLayer = new TileLayer({
       source: new XYZ({
         url: `http://localhost:8080/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
       }),
     });
 
-    // 원 생성 (반경 : raidus미터)
     const circle = new Feature({
       geometry: new Circle(fromLonLat([x, y]), radius),
     });
 
-    // 원 스타일 설정
     circle.setStyle(
       new Style({
         stroke: new Stroke({
@@ -95,24 +88,22 @@ const AgriMap = () => {
       })
     );
 
-    // 벡터 소스 및 레이어 생성
     const circleSource = new VectorSource({
       features: [circle],
     });
 
     const circleLayer = new VectorLayer({
-      title: '반경 표시',
       source: circleSource,
     });
 
-    // Rent Info 벡터 소스 및 레이어 생성
-    const rentInfoSource = new VectorSource({
-      features: rentInfoMarkers,
-    });
-
     const rentInfoLayer = new VectorLayer({
-      title: '농기계 대여 정보',
-      source: rentInfoSource,
+      title: '전체',
+      type: 'base',
+      name: 'agri',
+      visible: true,
+      source: new VectorSource({
+        features: rentInfoMarkers,
+      }),
       style: new Style({
         image: new Icon({
           src: markerImg,
@@ -124,41 +115,62 @@ const AgriMap = () => {
       }),
     });
 
-    // 반경 그룹 생성
-    const circleGroup = new Group({
-      title: '반경',
-      layers: [circleLayer],
-    });
+    const createFilteredLayer = (title, filterKey) => {
+      const filteredFeatures = rentInfoMarkers.filter(feature => parseInt(feature.get(filterKey)) > 0);
+      return new VectorLayer({
+        title,
+        type: 'base',
+        visible: false,
+        source: new VectorSource({
+          features: filteredFeatures,
+        }),
+        style: new Style({
+          image: new Icon({
+            src: markerImg,
+            scale: 1,
+            anchor: [0.5, 1],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+          }),
+        }),
+      });
+    };
 
-    // 농기계 대여 정보 그룹 생성
+    const trctorLayer = createFilteredLayer('트랙터', 'trctorHoldCo');
+    const thresherLayer = createFilteredLayer('탈곡기', 'thresherHoldCo');
+    const transplantLayer = createFilteredLayer('이앙 작업기', 'transplantHoldCo');
+    const cultvtLayer = createFilteredLayer('경운기', 'cultvtHoldCo');
+    const manageLayer = createFilteredLayer('관리기', 'manageHoldCo');
+    const harvestLayer = createFilteredLayer('땅속 작물 수확기', 'harvestHoldCo');
+    const planterLayer = createFilteredLayer('자주형 파종기', 'planterHoldCo');
+    const rcepntLayer = createFilteredLayer('벼 수확 및 운반 작업기', 'rcepntHoldCo');
+    const etcRentLayer = createFilteredLayer('기타 임대 농기계', 'etcRentHoldCo ');
+
     const rentInfoGroup = new Group({
-      title: '농기계 대여 정보',
-      layers: [rentInfoLayer],
+      title: '대여 가능 농기계 종류',
+      layers: [ etcRentLayer, transplantLayer,cultvtLayer,manageLayer,harvestLayer,planterLayer,rcepntLayer, thresherLayer, trctorLayer, rentInfoLayer],
     });
 
-    // 지도 뷰 설정
+
     const view = new View({
       center: fromLonLat([x, y]),
       zoom: 11,
     });
-    viewRef.current = view;  // view를 ref에 저장
+    viewRef.current = view;
 
-    // 레이어 스위처 생성
     const layerSwitcher = new LayerSwitcher({
       activationMode: 'click',
       startActive: true,
-      tipLabel: 'Layers', // Optional label for button
-      groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
+      tipLabel: 'Layers',
+      groupSelectStyle: 'children',
     });
 
-    // 지도 생성
     const map = new OlMap({
       controls: defaultControls().extend([layerSwitcher]),
-      layers: [vworldLayer, circleGroup, rentInfoGroup],
+      layers: [vworldLayer, rentInfoGroup, circleLayer],
       view: view,
     });
 
-    // 팝업 생성
     const popup = new Overlay({
       element: popupRef.current,
       positioning: 'bottom-center',
@@ -167,16 +179,14 @@ const AgriMap = () => {
     });
     map.addOverlay(popup);
 
-    // 마커 클릭 이벤트 설정
     map.on('click', function(evt) {
       map.forEachFeatureAtPixel(evt.pixel, function(feature) {
         if (feature.getGeometry().getType() === 'Point' && feature.get('x') && feature.get('y')) {
           const coordinates = feature.getGeometry().getCoordinates();
           const properties = feature.getProperties();
-          console.log(properties);
           setPopupContent(properties);
           popup.setPosition(coordinates);
-          viewRef.current.animate({ center: coordinates, duration: 500 });  // 지도 중심 이동 애니메이션 추가
+          viewRef.current.animate({ center: coordinates, duration: 500 });
         }
       });
     });
