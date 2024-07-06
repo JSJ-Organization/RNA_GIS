@@ -313,8 +313,25 @@
     & > div {
         border-radius: 1em;
     }
+
+    .toggle-button {
+        
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .has-agri-container {
+        overflow: hidden;
+        transition: height 0.3s ease;
+    }
+      
+    .map-link {
+        font-weight: 600;
+        margin-top: 0.5em;
+    }
 }
 
 .modal-window div:not(:last-of-type) {
-    margin-bottom: 1em;
+    margin-bottom: 0.6em;
 }
