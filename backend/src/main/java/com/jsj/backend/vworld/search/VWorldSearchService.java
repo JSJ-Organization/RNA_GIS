@@ -55,6 +55,8 @@ public class VWorldSearchService {
         } else if (response.getResponse().getError() != null) {
             errorCode = response.getResponse().getError().getCode();
             errorText = response.getResponse().getError().getText();
+        } else {
+            total = response.getResponse().getRecord().getTotal();
         }
         vWorldLogRepository.save(VWorldLog.builder()
                 .searchQuery(query)

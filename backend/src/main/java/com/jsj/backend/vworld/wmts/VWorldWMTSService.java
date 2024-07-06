@@ -82,6 +82,7 @@ public class VWorldWMTSService {
             total = 0;
             errorText = "데이터가 존재하지 않습니다";
         } else {
+            status = "OK";
             total = 1;
         }
 
