@@ -3,7 +3,7 @@ import Input from '../../components/Input'
 import useCssVariables from '../../hooks/useCssVariables';
 import PageMetadata from '../../components/PageMetadata';
 
-const CoordInput = () => {
+const CoordInputView = () => {
 
     useCssVariables({
       '--main-color-100': '#ff7b73',
@@ -19,4 +19,4 @@ const CoordInput = () => {
     )
 }
 
-export default CoordInput
+export default CoordInputView

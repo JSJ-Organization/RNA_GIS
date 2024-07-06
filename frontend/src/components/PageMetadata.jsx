@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { usePath } from '../PathContext';
+import { usePath } from '../contexts/PathContext';
 import { pathData } from '../pathData'
 
 const PageMetadata = () => {

@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faHandPointer } from '@fortawesome/free-solid-svg-icons';
-import Modal from './Modal';
-import PropTypes from 'prop-types';
-import { usePath } from '../PathContext';
+import { usePath } from '../contexts/PathContext';
 import { pathData } from '../pathData';
+import AgriModal from './modal/AgriModal';
+import CoordModal from './modal/CoordModal';
 
 const Input = () => {
 
@@ -50,29 +50,44 @@ const Input = () => {
   };
 
   const sendAddress = async () => {
-    if (inputRef.current.value) {
-      const addressValue = inputRef.current.value;
-      setAddress(addressValue);
-      setIsLoading(true);
-      setResults([]);
-      try {
-        const tempUrl = `http://localhost:8080/api/v1/search/api-point-with-page?query=${addressValue}&page=1`;
-        const response = await fetch(tempUrl);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setResults(data.vworldSearchResponses);
-        console.log(data.vworldSearchResponses);
-      } catch (error) {
+    if (!inputRef.current.value) return;
+  
+    const addressValue = inputRef.current.value;
+    setAddress(addressValue);
+    setIsLoading(true);
+    setResults([]);
+  
+    const API = {
+      coordinate: (address) => `${metaData.api.input}?query=${address}&page=1`,
+      agricultural: (address) => `${metaData.api.input}?keyword=${address}`
+    };
+  
+    const getResults = {
+      coordinate: (data) => data.vworldSearchResponses,
+      agricultural: (data) => data.frcnRentInfoResponses
+    };
+  
+    try {
+      const url = API[id](addressValue);
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  
+      const data = await response.json();
+      console.log(data);
+      if(!data.totalData){
         setResults([{ id: 0 }]);
-        console.error('Error fetching data:', error);
-      } finally {
-        timeoutFocus(inputRef);
-        setIsLoading(false);
+      }else {
+        setResults(getResults[id](data).slice(0,5));
       }
+    } catch (error) {
+      setResults([{ id: 0 }]);
+      console.error('Error fetching data:', error);
+    } finally {
+      timeoutFocus(inputRef);
+      setIsLoading(false);
     }
   };
+  
 
   const centerContainer = () => {
     if (containerRef.current) {
@@ -92,7 +107,6 @@ const Input = () => {
     }
     const result = results.find((item) => item.id === id);
     if (result) {
-      console.log('result : ' + result);
       setSelectedResult(result);
       setModalVisible(true);
     } else {
@@ -106,7 +120,12 @@ const Input = () => {
     }
   };
 
-
+  const modalProps = {
+    modalVisible: modalVisible,
+    selectedResult: selectedResult,
+    closeModal: closeModal,
+  };
+  
 
   return (
       <>
@@ -144,7 +163,7 @@ const Input = () => {
                         <div key={index} className='dropdown-item' onClick={() => findResult(result.id)}>
                           {result.id === 0 ? (
                               <div className='dropdown-text'>
-                                <li>검색 결과가 없습니다</li>
+                                <li>{metaData.searchException}</li>
                               </div>
                           ) : (
                               <>
@@ -162,11 +181,9 @@ const Input = () => {
             )}
           </div>
         </div>
-        <Modal
-            modalVisible={modalVisible}
-            selectedResult={selectedResult}
-            closeModal={closeModal}
-        />
+        {id === 'agricultural' && <AgriModal {...modalProps} />}
+        {id === 'coordinate' && <CoordModal {...modalProps} />}
+
       </>
   );
 };

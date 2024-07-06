@@ -13,9 +13,9 @@ import Point from 'ol/geom/Point';
 import { Style, Icon } from 'ol/style';
 import LayerSwitcher from 'ol-layerswitcher';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
-import markerImg from '../assets/images/marker.png';
+import markerImg from '../../assets/images/marker.png';
 
-const Map = () => {
+const CoordMap = () => {
   const location = useLocation();
 
   // URLSearchParams를 사용하여 쿼리 파라미터를 파싱
@@ -114,4 +114,4 @@ const Map = () => {
   );
 }
 
-export default Map;
+export default CoordMap;

@@ -1,16 +1,20 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeView from './views/HomeView';
 import BasicLayout from "./layout/BasicLayout";
-import CoordInput from "./views/coord/CoordInput";
-import CoordMap from "./views/coord/CoordMap";
-import AgriInput from "./views/agri/AgriInput";
-import AgriMap from "./views/agri/AgriMap";
-import { PathProvider } from "./PathContext";
+import CoordInputView from "./views/input/CoordInputView";
+import CoordMapView from "./views/map/CoordMapView";
+import AgriInputView from "./views/input/AgriInputView";
+import AgriMapView from "./views/map/AgriMapView";
+import { PathProvider } from "./contexts/PathContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
+import Loader from "./components/Loader";
 
 function App() {
 
   return (
+    <LoadingProvider>
       <BrowserRouter>
+        <Loader />
         <Routes>
           <Route path='/' element={
             <PathProvider value={{ id: 'home' }}>
@@ -22,19 +26,20 @@ function App() {
               <BasicLayout />
             </PathProvider>
             } >
-            <Route index element={<CoordInput />} />
-            <Route path='map' element={<CoordMap />} />
+            <Route index element={<CoordInputView />} />
+            <Route path='map' element={<CoordMapView />} />
           </Route>
           <Route path='/agricultural' element={
             <PathProvider value={{ id: 'agricultural' }}>
               <BasicLayout />
             </PathProvider>
           } >
-            <Route index element={<AgriInput />} />
-            <Route path='map' element={<AgriMap />} />
+            <Route index element={<AgriInputView />} />
+            <Route path='map' element={<AgriMapView />} />
           </Route>
         </Routes>
       </BrowserRouter>
+    </LoadingProvider>
   );
 }
 
