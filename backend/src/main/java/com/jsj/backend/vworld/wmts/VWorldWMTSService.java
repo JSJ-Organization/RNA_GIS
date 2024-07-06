@@ -1,9 +1,7 @@
 package com.jsj.backend.vworld.wmts;
 
-import com.jsj.backend.exception.EmptyInputException;
 import com.jsj.backend.vworld.log.VWorldLog;
 import com.jsj.backend.vworld.log.VWorldLogRepository;
-import com.jsj.backend.vworld.search.dto.VWorldSearchApiResponse;
 import com.jsj.backend.vworld.wmts.dto.VWorldWMTSApiRequest;
 import com.jsj.backend.vworld.wmts.dto.VWorldWMTSMapper;
 import com.jsj.backend.vworld.wmts.httpClient.VWorldWMTSApiClient;
@@ -15,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.jsj.backend.util.ValidationUtil.validateQuery;
 
 /**
  * VWorld WMTS 타일 서비스를 제공하는 클래스.
@@ -31,46 +31,6 @@ public class VWorldWMTSService {
 
     @Value("${api.vworld.key}")
     private String API_KEY_VWORLD; // 외부 설정 파일에서 주입받는 VWorld API 키
-
-    /**
-     * 주어진 레이어, 타일 좌표, 타일 타입이 유효한 값인지 확인하고 예외를 던집니다.
-     *
-     * @param layer    레이어 이름
-     * @param z        줌 레벨
-     * @param y        타일 Y 좌표
-     * @param x        타일 X 좌표
-     * @param tileType 타일 타입
-     * @throws InvalidTypeException 유효하지 않은 값일 경우 던지는 예외
-     */
-    public static Map<String, String> checkQueryEmpty(String layer, int z, int y, int x, String tileType) throws InvalidTypeException {
-        Map<String, String> error = new HashMap<>();
-
-        validateParameter(layer, "layer", error);
-        validateParameter(tileType, "tileType", error);
-        validateCoordinate(z, "z", error);
-        validateCoordinate(x, "x", error);
-        validateCoordinate(y, "y", error);
-
-        return error;
-    }
-
-    private static void validateParameter(String param, String paramName, Map<String, String> error) {
-        if (param == null || param.isEmpty()) {
-            String errorMessage = String.format("%s 가 빈 값입니다", paramName);
-            error.put("errorCode", "EMPTY_REQ");
-            error.put("errorText", errorMessage);
-            log.error(errorMessage);
-        }
-    }
-
-    private static void validateCoordinate(double value, String paramName, Map<String, String> error) {
-        if (value < 0 || Double.isNaN(value)) {
-            String errorMessage = String.format("%s 값이 유효하지 않습니다: %f", paramName, value);
-            error.put("errorCode", "INVALID_TYPE");
-            error.put("errorText", errorMessage);
-            log.error(errorMessage);
-        }
-    }
 
     private void logVWorldWMTApiResponse(VWorldWMTSApiRequest request, Map<String, String> error, byte[] response) {
         String errorCode = null;
@@ -114,7 +74,7 @@ public class VWorldWMTSService {
     public byte[] getTile(String layer, int z, int y, int x, String tileType) {
         Map<String, String> errorMap = new HashMap<>();
         try {
-            errorMap = checkQueryEmpty(layer, z, y, x, tileType);
+            errorMap = validateQuery(layer, z, y, x, tileType);
         } catch (InvalidTypeException e) {
             errorMap.put("errorCode", "INVALID_TYPE");
             errorMap.put("errorText", e.getMessage());
