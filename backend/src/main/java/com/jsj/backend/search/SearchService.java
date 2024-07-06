@@ -2,6 +2,7 @@ package com.jsj.backend.search;
 
 import com.jsj.backend.frcnRentInfo.entity.FrcnRentInfo;
 import com.jsj.backend.frcnRentInfo.FrcnRentInfoService;
+import com.jsj.backend.frcnRentInfo.FrcnRentInfoApiService;
 import com.jsj.backend.search.dto.SearchMapper;
 import com.jsj.backend.search.dto.SearchResponse;
 import com.jsj.backend.vworld.search.dto.VWorldSearchApiResponse;
@@ -27,6 +28,7 @@ public class SearchService {
 
     private final VWorldSearchService vWorldSearchService; // VWorld 검색 서비스 객체
     private final FrcnRentInfoService frcnRentInfoService; // 농기계 임대 정보 서비스 객체
+    private final FrcnRentInfoApiService frcnRentInfoApiService; // 농기계 임대 정보 api 서비스 객체
     private final SearchMapper mapper; // 검색 매퍼 객체
 
     /**
@@ -58,7 +60,7 @@ public class SearchService {
      * @return SearchResponse 농기계 임대 정보 검색 결과를 담고 있는 응답 객체
      */
     public SearchResponse getAllOffice() {
-        List<FrcnRentInfo> entities = frcnRentInfoService.getAllApiInfo();
+        List<FrcnRentInfo> entities = frcnRentInfoApiService.getAllApiInfo();
         return mapper.frcnRentInfoToSearch(entities, "", 1);
     }
 

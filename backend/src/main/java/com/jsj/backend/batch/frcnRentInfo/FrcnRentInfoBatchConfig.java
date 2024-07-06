@@ -1,7 +1,7 @@
 package com.jsj.backend.batch.frcnRentInfo;
 
 import com.jsj.backend.frcnRentInfo.entity.FrcnRentInfo;
-import com.jsj.backend.frcnRentInfo.FrcnRentInfoService;
+import com.jsj.backend.frcnRentInfo.FrcnRentInfoApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -28,7 +28,7 @@ public class FrcnRentInfoBatchConfig {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager; // 트랜잭션 관리자 객체
     private final FrcnRentInfoJobExecutionListener frcnRentInfoJobExecutionListener;
-    private final FrcnRentInfoService frcnRentInfoService;
+    private final FrcnRentInfoApiService frcnRentInfoApiService;
     private final JdbcTemplate jdbcTemplate;
 
     /**
@@ -40,7 +40,7 @@ public class FrcnRentInfoBatchConfig {
     @Bean(name = "frcnRentInfoReader")
     public ItemReader<FrcnRentInfo> reader() {
         return new ItemReader<FrcnRentInfo>() {
-            private final Iterator<FrcnRentInfo> dataIterator = frcnRentInfoService.getAllApiInfo().iterator();
+            private final Iterator<FrcnRentInfo> dataIterator = frcnRentInfoApiService.getAllApiInfo().iterator();
 
             @Override
             public FrcnRentInfo read() {
