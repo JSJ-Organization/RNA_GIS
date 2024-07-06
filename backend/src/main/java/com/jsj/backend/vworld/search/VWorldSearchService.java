@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import static com.jsj.backend.util.ValidationUtil.validateQuery;
+
 /**
  * VWorld 검색 서비스를 제공하는 클래스.
  * 이 클래스는 VWorld 검색 API를 호출하고 응답을 처리하는 기능을 제공합니다.
@@ -25,19 +27,6 @@ public class VWorldSearchService {
 
     @Value("${api.vworld.key}")
     private String API_KEY_VWORLD; // 외부 설정 파일에서 주입받는 VWorld API 키
-
-    /**
-     * 입력 쿼리가 빈 값인지 확인하고 예외를 던집니다.
-     *
-     * @param query 확인할 쿼리
-     */
-    private static void checkQueryEmpty(String query) {
-        if (query == null || query.trim().isEmpty()) {
-            String errorMessage = "검색이 불가능합니다:: 키워드가 빈 값입니다.";
-            log.error(errorMessage);
-            throw new EmptyInputException(errorMessage);
-        }
-    }
 
     /**
      * VWorld 검색 API 응답을 로깅하고 로그 저장소에 저장합니다.
@@ -76,7 +65,7 @@ public class VWorldSearchService {
      */
     public VWorldSearchApiResponse getPointWithPage(String query, Integer page) {
         log.info("query: {}, page: {}", query, page);
-        checkQueryEmpty(query);
+        validateQuery(query);
 
         VWorldSearchApiResponse response = vWorldSearchApiClient.getPoint(
                 VWorldSearchApiRequest.builder()
@@ -97,7 +86,7 @@ public class VWorldSearchService {
      */
     public VWorldSearchApiResponse getPoint(String query) {
         log.info("query: {}", query);
-        checkQueryEmpty(query);
+        validateQuery(query);
 
         VWorldSearchApiResponse response = vWorldSearchApiClient.getPoint(
                 VWorldSearchApiRequest.builder()
