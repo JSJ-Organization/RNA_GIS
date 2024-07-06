@@ -1,28 +1,29 @@
-package com.jsj.backend.batch;
+package com.jsj.backend.batch.frcnRentInfo;
 
-import org.springframework.batch.core.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-@RestController
-public class DemoController {
+@Service
+@Slf4j
+public class FrcnRentInfoBatchService {
     private final JobLauncher jobLauncher;
     private final Job frcnRentInfoJob;
 
-    public DemoController(
+    public FrcnRentInfoBatchService(
             JobLauncher jobLauncher,
             @Qualifier("frcnRentInfoJob") Job frcnRentInfoJob) {
         this.jobLauncher = jobLauncher;
         this.frcnRentInfoJob = frcnRentInfoJob;
     }
 
-    @GetMapping("/batch-test")
-    public String test() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    public String frcnRentInfoJob() {
+        log.info("Call batch job: {}", frcnRentInfoJob.getName());
         try {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
@@ -30,7 +31,7 @@ public class DemoController {
             JobExecution jobExecution = jobLauncher.run(frcnRentInfoJob, jobParameters);
             return "Job ID: " + jobExecution.getId() + " 상태: " + jobExecution.getStatus();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error during job execution", e);
             return "작업 실행 중 오류가 발생했습니다.";
         }
     }

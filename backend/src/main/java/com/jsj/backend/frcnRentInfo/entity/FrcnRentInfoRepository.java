@@ -13,6 +13,10 @@ public interface FrcnRentInfoRepository extends JpaRepository<FrcnRentInfo, Long
 
     List<FrcnRentInfo> findAllByBatchDate(String batchDate);
     boolean existsByBatchDate(String batchDate);
+
+    @Query("SELECT MAX(f.batchDate) FROM FrcnRentInfo f")
+    String findLatestBatchDate();
+
     @Modifying
     @Query("DELETE FROM FrcnRentInfo f WHERE f.batchDate = :date")
     void deleteAllByBatchDate(@Param("date") String date);
@@ -24,14 +28,8 @@ public interface FrcnRentInfoRepository extends JpaRepository<FrcnRentInfo, Long
     @Query("DELETE FROM FrcnRentInfo f WHERE f.batchDate < :date")
     void deletePastDataByDate(@Param("date") String date);
 
-    List<FrcnRentInfo> findAllByBatchDateAndRdnmadr(String batchDate, String rdnmadr);
-
-    List<FrcnRentInfo> findAllByBatchDateAndLnmadr(String batchDate, String lnmadr);
-
-    List<FrcnRentInfo> findAllByBatchDateAndOfficeNm(String batchDate, String officeNm);
     List<FrcnRentInfo> findAllByBatchDateAndOfficeNmContaining(String batchDate, String officeNm);
 
-    List<FrcnRentInfo> findAllByBatchDateAndInstitutionNm(String batchDate, String institutionNm);
     List<FrcnRentInfo> findAllByBatchDateAndInstitutionNmContaining(String batchDate, String institutionNm);
 
     List<FrcnRentInfo> findAllByBatchDateAndRdnmadrContaining(String batchDate, String rdnmadr);
