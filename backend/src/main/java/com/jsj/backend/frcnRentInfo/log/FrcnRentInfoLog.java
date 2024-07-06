@@ -32,6 +32,11 @@ public class FrcnRentInfoLog {
      */
     private String status;
     /**
+     * 전체 결과 건수
+     */
+    @Builder.Default
+    private Integer total = 0;
+    /**
      * 오류 코드 (있을 경우)
      */
     private String errorCode;

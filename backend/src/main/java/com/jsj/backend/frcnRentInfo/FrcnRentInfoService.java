@@ -1,6 +1,5 @@
 package com.jsj.backend.frcnRentInfo;
 
-import com.jsj.backend.exception.EmptyInputException;
 import com.jsj.backend.frcnRentInfo.dto.FrcnRentInfoApiRequest;
 import com.jsj.backend.frcnRentInfo.dto.FrcnRentInfoMapper;
 import com.jsj.backend.frcnRentInfo.entity.FrcnRentInfo;
@@ -41,12 +40,13 @@ public class FrcnRentInfoService {
      * @return FrcnRentInfo 엔티티 리스트
      */
     public List<FrcnRentInfo> getAllApiInfo() {
+
         List<FrcnRentInfo> response = frcnRentInfoMapper.apiToEntity(
                 frcnRentInfoApiClient.getAllOffice(FrcnRentInfoApiRequest.builder()
                         .serviceKey(API_KEY_FRCN_RENT_INFO)
                         .build())
         );
-        logFrcnRentInfoResponse("getAllApiInfo", new HashMap<>(), response);
+        logFrcnRentInfoResponse(null, new HashMap<>(), response);
         return response;
     }
 
@@ -58,7 +58,7 @@ public class FrcnRentInfoService {
     public List<FrcnRentInfo> findByBatchDate() {
         String todayDateString = DateUtil.getTodayDateString();
         List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDate(todayDateString);
-        logFrcnRentInfoResponse("findByBatchDate", new HashMap<>(), response);
+        logFrcnRentInfoResponse(null, new HashMap<>(), response);
         return response;
     }
 
@@ -69,24 +69,11 @@ public class FrcnRentInfoService {
      * @return FrcnRentInfo 엔티티 리스트
      */
     public List<FrcnRentInfo> findByBatchDateAndRdnmadrContaining(String rdnmadr) {
-        checkEmpty(rdnmadr);
+        checkQueryEmpty(rdnmadr);
         String todayDateString = DateUtil.getTodayDateString();
         List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndRdnmadrContaining(todayDateString, rdnmadr);
-        logFrcnRentInfoResponse("findByBatchDateAndRdnmadrContaining", new HashMap<>(), response);
-        return response;
-    }
-
-    /**
-     * 최신 배치 날짜와 주어진 지번 주소를 포함하는 농기계 임대 정보를 검색합니다.
-     *
-     * @param lnmadr 지번 주소
-     * @return FrcnRentInfo 엔티티 리스트
-     */
-    public List<FrcnRentInfo> findByBatchDateAndLnmadr(String lnmadr) {
-        checkEmpty(lnmadr);
-        String todayDateString = DateUtil.getTodayDateString();
-        List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndLnmadr(todayDateString, lnmadr);
-        logFrcnRentInfoResponse("findByBatchDateAndLnmadr", new HashMap<>(), response);
+        String searchQuery = rdnmadr;
+        logFrcnRentInfoResponse(searchQuery, new HashMap<>(), response);
         return response;
     }
 
@@ -97,10 +84,11 @@ public class FrcnRentInfoService {
      * @return FrcnRentInfo 엔티티 리스트
      */
     public List<FrcnRentInfo> findByBatchDateAndLnmadrContaining(String lnmadr) {
-        checkEmpty(lnmadr);
+        checkQueryEmpty(lnmadr);
         String todayDateString = DateUtil.getTodayDateString();
         List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndLnmadrContaining(todayDateString, lnmadr);
-        logFrcnRentInfoResponse("findByBatchDateAndLnmadrContaining", new HashMap<>(), response);
+        String searchQuery = lnmadr;
+        logFrcnRentInfoResponse(searchQuery, new HashMap<>(), response);
         return response;
     }
 
@@ -111,10 +99,11 @@ public class FrcnRentInfoService {
      * @return FrcnRentInfo 엔티티 리스트
      */
     public List<FrcnRentInfo> findByBatchDateAndKeywordContaining(String keyword) {
-        checkEmpty(keyword);
+        checkQueryEmpty(keyword);
         String todayDateString = DateUtil.getTodayDateString();
         List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndRdnmadrContainingOrLnmadrContaining(todayDateString, keyword, keyword);
-        logFrcnRentInfoResponse("findByBatchDateAndKeywordContaining", new HashMap<>(), response);
+        String searchQuery = keyword;
+        logFrcnRentInfoResponse(searchQuery, new HashMap<>(), response);
         return response;
     }
 
@@ -125,10 +114,11 @@ public class FrcnRentInfoService {
      * @return FrcnRentInfo 엔티티 리스트
      */
     public List<FrcnRentInfo> findByBatchDateAndOfficeNmContaining(String officeNm) {
-        checkEmpty(officeNm);
+        checkQueryEmpty(officeNm);
         String todayDateString = DateUtil.getTodayDateString();
         List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndOfficeNmContaining(todayDateString, officeNm);
-        logFrcnRentInfoResponse("findByBatchDateAndOfficeNmContaining", new HashMap<>(), response);
+        String searchQuery = officeNm;
+        logFrcnRentInfoResponse(searchQuery, new HashMap<>(), response);
         return response;
     }
 
@@ -139,25 +129,26 @@ public class FrcnRentInfoService {
      * @return FrcnRentInfo 엔티티 리스트
      */
     public List<FrcnRentInfo> findByBatchDateAndInstitutionNmContaining(String institutionNm) {
-        checkEmpty(institutionNm);
+        checkQueryEmpty(institutionNm);
         String todayDateString = DateUtil.getTodayDateString();
         List<FrcnRentInfo> response = frcnRentInfoRepository.findAllByBatchDateAndInstitutionNmContaining(todayDateString, institutionNm);
-        logFrcnRentInfoResponse("findByBatchDateAndInstitutionNmContaining", new HashMap<>(), response);
+        String searchQuery = institutionNm;
+        logFrcnRentInfoResponse(searchQuery, new HashMap<>(), response);
         return response;
     }
 
     /**
      * 주어진 좌표와 거리 내에 있는 농기계 임대 정보를 검색합니다.
      *
-     * @param x 좌표의 경도
-     * @param y 좌표의 위도
+     * @param x        좌표의 경도
+     * @param y        좌표의 위도
      * @param distance 검색할 거리
      * @return FrcnRentInfo 엔티티 리스트
      */
     public List<FrcnRentInfo> findByLocationWithin(double x, double y, Integer distance) {
         Map<String, String> errorMap = new HashMap<>();
         try {
-            checkEmpty(x, y, distance);
+            checkQueryEmpty(x, y, distance);
         } catch (InvalidTypeException e) {
             errorMap.put("errorCode", "INVALID_TYPE");
             errorMap.put("errorText", e.getMessage());
@@ -176,13 +167,24 @@ public class FrcnRentInfoService {
      * @param response 응답 객체
      */
     private void logFrcnRentInfoResponse(String query, Map<String, String> error, List<FrcnRentInfo> response) {
-        String status = response.isEmpty() ? "NOT_FOUND" : error.isEmpty() ? "OK" : "ERROR";
+        String status;
         String errorCode = error.get("errorCode");
         String errorText = error.get("errorText");
+        log.info(errorCode + errorText);
+        Integer total = 0;
+        if (response.isEmpty()) {
+            status = "NOT_FOUND";
+        } else if (error.isEmpty()) {
+            status = "OK";
+            total = response.size();
+        } else {
+            status = "ERROR";
+        }
 
         frcnRentInfoLogRepository.save(FrcnRentInfoLog.builder()
                 .searchQuery(query)
                 .status(status)
+                .total(total)
                 .errorCode(errorCode)
                 .errorText(errorText)
                 .build());
@@ -193,35 +195,43 @@ public class FrcnRentInfoService {
      *
      * @param query 확인할 쿼리
      */
-    public static void checkEmpty(String query) {
+    public static Map<String, String> checkQueryEmpty(String query) {
+        Map<String, String> error = new HashMap<>();
         if (query == null || query.trim().isEmpty()) {
             String errorMessage = "검색이 불가능합니다:: 키워드가 빈 값입니다.";
             log.error(errorMessage);
-            throw new EmptyInputException(errorMessage);
+            error.put("errorCode", "EMPTY_REQ");
+            error.put("errorText", errorMessage);
         }
+        return error;
     }
 
     /**
      * 주어진 좌표와 거리가 유효한 값인지 확인하고 예외를 던집니다.
      *
-     * @param x       경도
-     * @param y       위도
+     * @param x        경도
+     * @param y        위도
      * @param distance 거리
      * @throws InvalidTypeException 유효하지 않은 값일 경우 던지는 예외
      */
-    public static void checkEmpty(double x, double y, Integer distance) throws InvalidTypeException {
+    public static Map<String, String> checkQueryEmpty(double x, double y, Integer distance) throws InvalidTypeException {
+        Map<String, String> error = new HashMap<>();
         if (distance == null) {
             String errorMessage = "distance 가 빈 값입니다:: distance: null";
+            error.put("errorCode", "INVALID_TYPE");
+            error.put("errorText", errorMessage);
             log.error(errorMessage);
-            throw new InvalidTypeException(errorMessage);
         } else if (distance <= 0) {
             String errorMessage = String.format("distance 가 0보다 큰 값이어야 합니다:: distance: %d", distance);
+            error.put("errorCode", "INVALID_TYPE");
+            error.put("errorText", errorMessage);
             log.error(errorMessage);
-            throw new InvalidTypeException(errorMessage);
         } else if (Double.isNaN(x) || Double.isNaN(y)) {
             String errorMessage = String.format("x, y 타입이 잘못되었습니다:: x: %f , y: %f", x, y);
+            error.put("errorCode", "INVALID_TYPE");
+            error.put("errorText", errorMessage);
             log.error(errorMessage);
-            throw new InvalidTypeException(errorMessage);
         }
+        return error;
     }
 }

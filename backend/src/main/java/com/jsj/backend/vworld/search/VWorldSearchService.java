@@ -5,16 +5,11 @@ import com.jsj.backend.vworld.log.VWorldLog;
 import com.jsj.backend.vworld.log.VWorldLogRepository;
 import com.jsj.backend.vworld.search.dto.VWorldSearchApiRequest;
 import com.jsj.backend.vworld.search.dto.VWorldSearchApiResponse;
-import com.jsj.backend.vworld.search.dto.VWorldSearchResponse;
 import com.jsj.backend.vworld.search.httpClient.VWorldSearchApiClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * VWorld 검색 서비스를 제공하는 클래스.
@@ -32,32 +27,11 @@ public class VWorldSearchService {
     private String API_KEY_VWORLD; // 외부 설정 파일에서 주입받는 VWorld API 키
 
     /**
-     * VWorld 검색 API 응답을 VWorldSearchResponse 리스트로 변환합니다.
-     *
-     * @param apiResponse VWorld 검색 API 응답 객체
-     * @return VWorldSearchResponse 리스트
-     */
-    public List<VWorldSearchResponse> apiToResponse(VWorldSearchApiResponse apiResponse) {
-        List<VWorldSearchApiResponse.Response.Result.Item> items = apiResponse.getResponse().getResult().getItems();
-
-        return items.stream().map(item -> VWorldSearchResponse.builder()
-                .x(Double.parseDouble(item.getPoint().getX()))
-                .y(Double.parseDouble(item.getPoint().getY()))
-                .roadNameAddress(item.getAddress().getRoad())
-                .parcelAddress(item.getAddress().getParcel())
-                .zipcode(item.getAddress().getZipcode())
-                .bldnm(item.getAddress().getBldnm())
-                .bldnmdc(item.getAddress().getBldnmdc())
-                .build()
-        ).collect(toList());
-    }
-
-    /**
      * 입력 쿼리가 빈 값인지 확인하고 예외를 던집니다.
      *
      * @param query 확인할 쿼리
      */
-    private static void checkEmpty(String query) {
+    private static void checkQueryEmpty(String query) {
         if (query == null || query.trim().isEmpty()) {
             String errorMessage = "검색이 불가능합니다:: 키워드가 빈 값입니다.";
             log.error(errorMessage);
@@ -74,6 +48,7 @@ public class VWorldSearchService {
     private void logVWorldSearchApiResponse(String query, VWorldSearchApiResponse response) {
         String errorCode = null;
         String errorText = null;
+        Integer total = 0;
         if (response.getResponse() == null) {
             errorCode = "NOT_FOUND";
             errorText = "데이터가 존재하지 않습니다";
@@ -84,6 +59,7 @@ public class VWorldSearchService {
         vWorldLogRepository.save(VWorldLog.builder()
                 .searchQuery(query)
                 .status(response.getResponse().getStatus())
+                        .total(total)
                 .errorCode(errorCode)
                 .errorText(errorText)
                 .build());
@@ -98,7 +74,7 @@ public class VWorldSearchService {
      */
     public VWorldSearchApiResponse getPointWithPage(String query, Integer page) {
         log.info("query: {}, page: {}", query, page);
-        checkEmpty(query);
+        checkQueryEmpty(query);
 
         VWorldSearchApiResponse response = vWorldSearchApiClient.getPoint(
                 VWorldSearchApiRequest.builder()
@@ -119,7 +95,7 @@ public class VWorldSearchService {
      */
     public VWorldSearchApiResponse getPoint(String query) {
         log.info("query: {}", query);
-        checkEmpty(query);
+        checkQueryEmpty(query);
 
         VWorldSearchApiResponse response = vWorldSearchApiClient.getPoint(
                 VWorldSearchApiRequest.builder()
