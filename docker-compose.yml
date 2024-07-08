@@ -44,31 +44,33 @@ services:
 
   backend:
     container_name: backend
-    build: ./backend
+    image: ${DOCKER_USERNAME}/${REPO_NAME}-backend:${VERSION}
     ports:
       - "${BACKEND_PORT}:8080"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_HOST: postgres
       POSTGIS_PORT: ${POSTGIS_PORT}
       VWORLD_KEY: ${VWORLD_KEY}
       FRCN_RENT_INFO_KEY: ${FRCN_RENT_INFO_KEY}
     networks:
       - geoserver-net
+    depends_on:
+      - postgres
 
-#  frontend:
-#    container_name: frontend
-#    build: ./frontend
-#    ports:
-#      - "80:80"
-#    networks:
-#      - geoserver-net
-#    environment:
-#      VITE_BACKEND_URL: "http://backend:8080"
-#      VITE_GEOSERVER_URL: "http://geoserver_GIS:8081"
-#      VITE_PGADMIN_URL: "http://gis_pgadmin:5050"
+  frontend:
+    container_name: frontend
+    image: ${DOCKER_USERNAME}/${REPO_NAME}-frontend:${VERSION}
+    ports:
+      - "${FRONTEND_PORT}:80"
+    networks:
+      - geoserver-net
+    environment:
+      VITE_BACKEND_URL: "http://backend:8080"
+      VITE_GEOSERVER_URL: "http://geoserver_GIS:8080"
+      VITE_PGADMIN_URL: "http://gis_pgadmin:80"
 
 networks:
   geoserver-net:
