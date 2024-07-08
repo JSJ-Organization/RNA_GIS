@@ -79,6 +79,8 @@ jobs:
           echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" >> .env
           echo "VITE_GEOSERVER_URL=${{ secrets.VITE_GEOSERVER_URL }}" >> .env
           echo "VITE_PGADMIN_URL=${{ secrets.VITE_PGADMIN_URL }}" >> .env
+          echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
+          echo "REPO_NAME=${{ secrets.REPO_NAME }}" >> .env
           echo "VERSION=${{ env.VERSION }}" >> .env
 
       - name: Copy files via SSH
