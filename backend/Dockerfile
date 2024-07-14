@@ -31,11 +31,17 @@ RUN /bin/bash ./gradlew bootJar
 # Use openjdk for the final stage
 FROM amazoncorretto:17-alpine-jdk
 
+# Create user and group
+RUN addgroup -S spring && adduser -S spring -G spring
+
 WORKDIR /backend
 
 COPY --from=builder /backend/build/libs/*.jar app.jar
 
 ENV TZ=Asia/Seoul
+
+# Change ownership of the app directory to spring user
+RUN chown -R spring:spring /backend
 
 USER spring:spring
 
