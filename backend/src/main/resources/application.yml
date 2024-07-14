@@ -28,3 +28,5 @@ springdoc:
     path: /api/swagger-ui
   api-docs:
     path: /api-docs
+
+domain: ${DOMAIN}
