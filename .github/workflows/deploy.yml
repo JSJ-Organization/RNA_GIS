@@ -37,6 +37,7 @@ jobs:
 
       - name: Create SSL directory and files
         run: |
+          pwd
           mkdir -p ssl
           echo "${{ secrets.SSL_CERT_PEM }}" > ssl/cert.pem
           echo "${{ secrets.SSL_CHAIN_PEM }}" > ssl/chain.pem
