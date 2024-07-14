@@ -71,6 +71,8 @@ services:
       VITE_BACKEND_URL: ${VITE_BACKEND_URL}
       VITE_GEOSERVER_URL: ${VITE_GEOSERVER_URL}
       VITE_PGADMIN_URL: ${VITE_PGADMIN_URL}
+    volumes:
+      - ssl:/etc/letsencrypt/live/${DOMAIN}
     networks:
       - geoserver-net
 
@@ -81,3 +83,4 @@ networks:
 volumes:
   postgres_data:
   pgadmin:
+  ssl:
