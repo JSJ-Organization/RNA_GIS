@@ -5,6 +5,7 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 # package.json과 package-lock.json 복사
+COPY ../.env .env
 COPY package*.json ./
 
 # 의존성 설치
