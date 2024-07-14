@@ -33,11 +33,11 @@ jobs:
 
       - name: Create SSL directory and files
         run: |
-          mkdir -p ssl
-          echo "${{ secrets.CERT_PEM }}" > ssl/cert.pem
-          echo "${{ secrets.CHAIN_PEM }}" > ssl/chain.pem
-          echo "${{ secrets.FULLCHAIN_PEM }}" > ssl/fullchain.pem
-          echo "${{ secrets.PRIVKEY_PEM }}" > ssl/privkey.pem
+          mkdir -p frontend/ssl
+          echo "${{ secrets.CERT_PEM }}" > frontend/ssl/cert.pem
+          echo "${{ secrets.CHAIN_PEM }}" > frontend/ssl/chain.pem
+          echo "${{ secrets.FULLCHAIN_PEM }}" > frontend/ssl/fullchain.pem
+          echo "${{ secrets.PRIVKEY_PEM }}" > frontend/ssl/privkey.pem
 
       - name: Build, tag, and push backend image
         run: |
@@ -54,6 +54,8 @@ jobs:
           echo "Pushing frontend image to Docker Hub..."
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG
           echo "::set-output name=frontend_image::${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG"
+      - name: Clean up
+        run: rm -rf frontend/ssl
 
   deploy:
     name: Deploy to personal server
@@ -94,7 +96,7 @@ jobs:
 
       - name: Copy files via SSH
         run: |
-          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env ssl/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
+          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
 
       - name: Deploy via SSH
         run: |
@@ -103,5 +105,4 @@ jobs:
             docker-compose pull
             docker-compose down
             docker-compose up -d
-            rm -rf ssl
           EOF
