@@ -29,6 +29,9 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
 
+# Nginx 설정 파일 확인
+RUN ls -l /etc/nginx/nginx.conf
+RUN ls -l /etc/nginx/conf.d/default.conf.template
 
 # Nginx 포트 설정
 EXPOSE 80
