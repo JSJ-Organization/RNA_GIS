@@ -4,8 +4,7 @@ FROM amazoncorretto:17-alpine-jdk AS builder
 RUN apk update && apk add --no-cache bash dos2unix
 
 # Create user and group
-RUN addgroup -S spring
-&& adduser -S spring -G spring
+RUN addgroup -S spring && adduser -S spring -G spring
 
 # Set work directory
 WORKDIR /backend
@@ -18,8 +17,7 @@ COPY settings.gradle .
 COPY src src
 
 # Ensure the gradlew file is in Unix format and has execute permission
-RUN dos2unix gradlew
-&& chmod +x gradlew
+RUN dos2unix gradlew && chmod +x gradlew
 
 # Change ownership of the working directory to spring user
 RUN chown -R spring:spring /backend
