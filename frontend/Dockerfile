@@ -19,7 +19,7 @@ RUN npm run build
 # Nginx 사용하여 빌드된 파일을 서빙
 FROM nginx:alpine
 
-COPY ./ssl /etc/letsencrypt/live/${DOMAIN}
+COPY ./ssl/ /etc/letsencrypt/live/${DOMAIN}
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
