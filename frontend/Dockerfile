@@ -21,8 +21,17 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Nginx 설정 파일 복사
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY ./ssl /etc/letsencrypt/live/${DOMAIN}
 
 # Nginx 포트 설정
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 443
+
+# 환경 변수를 치환하고 Nginx를 시작하는 엔트리포인트 스크립트 추가
+RUN apk add --no-cache gettext
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+CMD ["./docker-entrypoint.sh"]
