@@ -7,5 +7,9 @@ envsubst '${DOMAIN}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf
 echo "Nginx configuration:"
 cat /etc/nginx/conf.d/default.conf
 
+
+echo "check ssl:"
+ls -l /etc/letsencrypt/live
+ls -l /etc/letsencrypt/live/${DOMAIN}
 # Nginx 시작
 exec nginx -g 'daemon off;'
