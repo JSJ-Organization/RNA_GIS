@@ -20,6 +20,8 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY ./ssl/ /etc/letsencrypt/live/${DOMAIN}
+# SSL 인증서 파일 확인
+RUN ls -l /etc/letsencrypt/live/${DOMAIN}
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
@@ -34,7 +36,7 @@ EXPOSE 443
 
 # 환경 변수를 치환하고 Nginx를 시작하는 엔트리포인트 스크립트 추가
 RUN apk add --no-cache gettext
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 CMD ["./docker-entrypoint.sh"]
