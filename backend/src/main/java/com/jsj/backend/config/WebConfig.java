@@ -1,5 +1,6 @@
 package com.jsj.backend.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,6 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebConfig {
+
+    @Value("${domain}")
+    private String DOMAIN;
 
     /**
      * WebMvcConfigurer에 대한 빈 정의.
@@ -36,7 +40,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("*")
-                        .allowedOrigins("http://localhost:5173", "http://localhost:80", "http://localhost:8080", "http://localhost")
+                        .allowedOrigins("http://localhost:5173", "http://localhost:80", "http://localhost:8080", "http://localhost", "https://" + DOMAIN)
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

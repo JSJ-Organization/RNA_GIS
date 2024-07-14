@@ -55,6 +55,7 @@ services:
       POSTGIS_PORT: ${POSTGIS_PORT}
       VWORLD_KEY: ${VWORLD_KEY}
       FRCN_RENT_INFO_KEY: ${FRCN_RENT_INFO_KEY}
+      DOMAIN: ${DOMAIN}
     networks:
       - geoserver-net
     depends_on:
