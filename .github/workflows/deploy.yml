@@ -38,11 +38,11 @@ jobs:
       - name: Create SSL directory and files
         run: |
           pwd
-          mkdir -p ssl
-          echo "${{ secrets.SSL_CERT_PEM }}" > ssl/cert.pem
-          echo "${{ secrets.SSL_CHAIN_PEM }}" > ssl/chain.pem
-          echo "${{ secrets.SSL_FULLCHAIN_PEM }}" > ssl/fullchain.pem
-          echo "${{ secrets.SSL_PRIVKEY_PEM }}" > ssl/privkey.pem
+          mkdir -p frontend/ssl
+          echo "${{ secrets.SSL_CERT_PEM }}" > frontend/ssl/cert.pem
+          echo "${{ secrets.SSL_CHAIN_PEM }}" > frontend/ssl/chain.pem
+          echo "${{ secrets.SSL_FULLCHAIN_PEM }}" > frontend/ssl/fullchain.pem
+          echo "${{ secrets.SSL_PRIVKEY_PEM }}" > frontend/ssl/privkey.pem
 
       - name: Build, tag, and push backend image
         run: |
