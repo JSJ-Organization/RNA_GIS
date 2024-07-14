@@ -29,7 +29,6 @@ jobs:
         run: |
           VERSION=$(date +'%Y%m%d%H%M%S')
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Create SSL directory and files
         run: |
@@ -41,7 +40,7 @@ jobs:
 
       - name: Build, tag, and push backend image
         run: |
-          IMAGE_TAG=${{ steps.get_version.outputs.VERSION }}
+          IMAGE_TAG=$VERSION
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG ./backend
           echo "Pushing backend image to Docker Hub..."
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG
@@ -49,7 +48,7 @@ jobs:
 
       - name: Build, tag, and push frontend image
         run: |
-          IMAGE_TAG=${{ steps.get_version.outputs.VERSION }}
+          IMAGE_TAG=$VERSION
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG --build-arg DOMAIN=${{ secrets.DOMAIN }} ./frontend
           echo "Pushing frontend image to Docker Hub..."
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG
@@ -92,7 +91,7 @@ jobs:
           echo "VITE_PGADMIN_URL=${{ secrets.VITE_PGADMIN_URL }}" >> .env
           echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
           echo "REPO_NAME=${{ secrets.REPO_NAME }}" >> .env
-          echo "VERSION=${{ steps.get_version.outputs.VERSION }}" >> .env
+          echo "VERSION=$VERSION" >> .env
           echo "DOMAIN=${{ secrets.DOMAIN }}" >> .env
           
       - name: Copy files via SSH
