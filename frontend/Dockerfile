@@ -18,12 +18,15 @@ RUN npm run build
 
 # Nginx 사용하여 빌드된 파일을 서빙
 FROM nginx:alpine
+
+COPY ./ssl /etc/letsencrypt/live/${DOMAIN}
+
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Nginx 설정 파일 복사
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
-COPY ./frontend/ssl /etc/letsencrypt/live/${DOMAIN}
+
 
 # Nginx 포트 설정
 EXPOSE 80
