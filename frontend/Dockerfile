@@ -19,7 +19,7 @@ RUN npm run build
 # Nginx 사용하여 빌드된 파일을 서빙
 FROM nginx:alpine
 
-COPY ./ssl/ /etc/letsencrypt/live/${DOMAIN}
+COPY ./ssl/ /etc/letsencrypt/live/${DOMAIN}/
 # SSL 인증서 파일 확인
 RUN ls -l /etc/letsencrypt/live/${DOMAIN}
 
