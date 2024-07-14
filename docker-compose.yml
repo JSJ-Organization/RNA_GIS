@@ -72,6 +72,7 @@ services:
       VITE_BACKEND_URL: ${VITE_BACKEND_URL}
       VITE_GEOSERVER_URL: ${VITE_GEOSERVER_URL}
       VITE_PGADMIN_URL: ${VITE_PGADMIN_URL}
+      VITE_DOMAIN: ${VITE_DOMAIN}
     volumes:
       - ssl:/etc/letsencrypt/live/${DOMAIN}
     networks:
