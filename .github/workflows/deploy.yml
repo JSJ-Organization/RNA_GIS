@@ -94,7 +94,7 @@ jobs:
 
       - name: Copy files via SSH
         run: |
-          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
+          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env ssl/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
 
       - name: Deploy via SSH
         run: |
@@ -103,4 +103,5 @@ jobs:
             docker-compose pull
             docker-compose down
             docker-compose up -d
+            rm -rf ssl
           EOF
