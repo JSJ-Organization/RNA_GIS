@@ -11,6 +11,9 @@ jobs:
     name: Build and Push Docker images
     runs-on: ubuntu-22.04
 
+    outputs:
+      version: ${{ steps.set_version.outputs.version }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,10 +28,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Set version to current date
-        id: get_version
+        id: set_version
+        shell: bash
         run: |
           VERSION=$(date +'%Y%m%d%H%M%S')
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Create SSL directory and files
         run: |
@@ -44,7 +48,7 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG ./backend
           echo "Pushing backend image to Docker Hub..."
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG
-          echo "backend_image=${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "backend_image=${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG"
 
       - name: Build, tag, and push frontend image
         run: |
@@ -52,7 +56,7 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG --build-arg DOMAIN=${{ secrets.DOMAIN }} ./frontend
           echo "Pushing frontend image to Docker Hub..."
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG
-          echo "frontend_image=${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "frontend_image=${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG"
       - name: Clean up
         run: rm -rf frontend/ssl
 
@@ -72,6 +76,7 @@ jobs:
 
       - name: Create .env file
         run: |
+          VERSION="${{ needs.build_and_push.output.VERSION }}"
           echo "BACKEND_PORT=${{ secrets.BACKEND_PORT }}" >> .env
           echo "FRONTEND_PORT=${{ secrets.FRONTEND_PORT }}" >> .env
           echo "POSTGIS_PORT=${{ secrets.POSTGIS_PORT }}" >> .env
