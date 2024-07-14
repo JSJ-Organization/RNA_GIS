@@ -23,7 +23,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Nginx 설정 파일 복사
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
-COPY ./ssl /etc/letsencrypt/live/${DOMAIN}
+COPY ./frontend/ssl /etc/letsencrypt/live/${DOMAIN}
 
 # Nginx 포트 설정
 EXPOSE 80
