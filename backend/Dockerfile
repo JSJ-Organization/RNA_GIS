@@ -1,7 +1,7 @@
 FROM amazoncorretto:17-alpine-jdk AS builder
 
-# Install bash
-RUN apk update && apk add --no-cache bash
+# Install necessary packages
+RUN apk update && apk add --no-cache bash dos2unix
 
 # Create user and group
 RUN addgroup -S spring && adduser -S spring -G spring
@@ -17,8 +17,7 @@ COPY settings.gradle .
 COPY src src
 
 # Ensure the gradlew file is in Unix format and has execute permission
-RUN dos2unix gradlew
-RUN chmod +x gradlew
+RUN dos2unix gradlew && chmod +x gradlew
 
 # Change ownership of the working directory to spring user
 RUN chown -R spring:spring /backend
@@ -30,11 +29,20 @@ USER spring:spring
 RUN /bin/bash ./gradlew bootJar
 
 # Use openjdk for the final stage
-FROM openjdk:17
+FROM amazoncorretto:17-alpine-jdk
+
+# Create user and group
+RUN addgroup -S spring && adduser -S spring -G spring
+
 WORKDIR /backend
+
 COPY --from=builder /backend/build/libs/*.jar app.jar
 
 ENV TZ=Asia/Seoul
 
+# Change ownership of the app directory to spring user
+RUN chown -R spring:spring /backend
+
+USER spring:spring
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
-VOLUME /tmp

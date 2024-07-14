@@ -11,40 +11,54 @@ jobs:
     name: Build and Push Docker images
     runs-on: ubuntu-22.04
 
+    outputs:
+      VERSION: ${{ steps.set_version.outputs.VERSION }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Set version to current date
-        id: get_version
+        id: set_version
+        shell: bash
         run: |
-          VERSION=$(date +'%Y%m%d%H%M%S')
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          VERSION=$(TZ=Asia/Seoul date +'%Y%m%d%H%M%S')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create SSL directory and files
+        run: |
+          pwd
+          mkdir -p frontend/ssl
+          echo "${{ secrets.SSL_CERT_PEM }}" > frontend/ssl/cert.pem
+          echo "${{ secrets.SSL_CHAIN_PEM }}" > frontend/ssl/chain.pem
+          echo "${{ secrets.SSL_FULLCHAIN_PEM }}" > frontend/ssl/fullchain.pem
+          echo "${{ secrets.SSL_PRIVKEY_PEM }}" > frontend/ssl/privkey.pem
 
       - name: Build, tag, and push backend image
         run: |
-          IMAGE_TAG=${{ env.VERSION }}
+          IMAGE_TAG=$VERSION
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG ./backend
           echo "Pushing backend image to Docker Hub..."
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG
-          echo "::set-output name=backend_image::${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG"
+          echo "backend_image=${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend:$IMAGE_TAG"
 
       - name: Build, tag, and push frontend image
         run: |
-          IMAGE_TAG=${{ env.VERSION }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG ./frontend
+          IMAGE_TAG=$VERSION
+          docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG --build-arg DOMAIN=${{ secrets.DOMAIN }} ./frontend
           echo "Pushing frontend image to Docker Hub..."
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG
-          echo "::set-output name=frontend_image::${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG"
+          echo "frontend_image=${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend:$IMAGE_TAG"
 
   deploy:
     name: Deploy to personal server
@@ -53,7 +67,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -62,6 +76,7 @@ jobs:
 
       - name: Create .env file
         run: |
+          VERSION="${{ needs.build_and_push.outputs.VERSION }}"
           echo "BACKEND_PORT=${{ secrets.BACKEND_PORT }}" >> .env
           echo "FRONTEND_PORT=${{ secrets.FRONTEND_PORT }}" >> .env
           echo "POSTGIS_PORT=${{ secrets.POSTGIS_PORT }}" >> .env
@@ -81,17 +96,24 @@ jobs:
           echo "VITE_PGADMIN_URL=${{ secrets.VITE_PGADMIN_URL }}" >> .env
           echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
           echo "REPO_NAME=${{ secrets.REPO_NAME }}" >> .env
-          echo "VERSION=${{ env.VERSION }}" >> .env
-
+          echo "VERSION=$VERSION" >> .env
+          echo "DOMAIN=${{ secrets.DOMAIN }}" >> .env
+          
       - name: Copy files via SSH
         run: |
           scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
 
       - name: Deploy via SSH
         run: |
-          ssh -t -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+          ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd /home/${{ secrets.SSH_USERNAME }}
             docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            docker-compose up -d --remove-orphans
+            docker image prune -f
+
+            # Delete old frontend images except the latest one
+            docker images --format "{{.Repository}}:{{.Tag}}" | grep "${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend" | sort -t: -k2 -r | tail -n +2 | awk -F: '{print $1 ":" $2}' | xargs -r docker rmi -f
+
+            # Delete old backend images except the latest one
+            docker images --format "{{.Repository}}:{{.Tag}}" | grep "${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend" | sort -t: -k2 -r | tail -n +2 | awk -F: '{print $1 ":" $2}' | xargs -r docker rmi -f
           EOF
