@@ -26,6 +26,9 @@ FROM nginx:alpine
 # 환경 변수 설정
 ARG DOMAIN
 
+# Certbot 설치
+RUN apk add --no-cache certbot certbot-nginx openssl
+
 COPY ./ssl/ /etc/letsencrypt/live/${DOMAIN}/
 # SSL 인증서 파일 확인
 RUN ls -l /etc/letsencrypt/live/${DOMAIN}
