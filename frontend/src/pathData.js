@@ -8,7 +8,7 @@ export const pathData = {
     description: '좌표 변환기',
     searchException: '검색 결과가 없습니다.',
     api: {
-      input: 'http://localhost:8080/api/v1/search/api-point-with-page',
+      input: `https://${import.meta.env.VITE_DOMAIN}/api/v1/search/api-point-with-page`,
     }
   },
   'agricultural' : {
@@ -16,7 +16,7 @@ export const pathData = {
     description: '농기계 임대 검색',
     searchException: '해당 주소에 농기계가 없습니다.',
     api: {
-      input: 'http://localhost:8080/api/v1/search/office-address',
+      input: `https://${import.meta.env.VITE_DOMAIN}/api/v1/search/office-address`,
     }
   },
-  }
+}

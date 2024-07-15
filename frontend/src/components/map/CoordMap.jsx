@@ -40,7 +40,7 @@ const CoordMap = () => {
       type: 'base',
       visible: false,
       source: new XYZ({
-        url : `http://localhost:8080/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
+        url : `https://${import.meta.env.VITE_DOMAIN}/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
       })
     })
 
@@ -50,7 +50,7 @@ const CoordMap = () => {
       type: 'base',
       visible: false,
       source: new XYZ({
-        url : `http://localhost:8080/api/v1/search/wmts/Satellite/{z}/{y}/{x}.jpeg`,
+        url : `https://${import.meta.env.VITE_DOMAIN}/api/v1/search/wmts/Satellite/{z}/{y}/{x}.jpeg`,
       })
     })
 

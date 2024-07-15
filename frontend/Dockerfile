@@ -4,6 +4,10 @@ FROM node:20-alpine AS build
 # 작업 디렉토리 설정
 WORKDIR /app
 
+# .env 파일 생성
+ARG DOMAIN
+RUN echo "VITE_DOMAIN=${DOMAIN}" > .env
+
 # package.json과 package-lock.json 복사
 COPY package*.json ./
 
@@ -21,6 +25,9 @@ FROM nginx:alpine
 
 # 환경 변수 설정
 ARG DOMAIN
+
+# Certbot 설치
+RUN apk add --no-cache certbot certbot-nginx openssl
 
 COPY ./ssl/ /etc/letsencrypt/live/${DOMAIN}/
 # SSL 인증서 파일 확인

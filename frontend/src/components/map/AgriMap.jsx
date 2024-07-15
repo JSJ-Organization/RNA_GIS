@@ -35,7 +35,7 @@ const AgriMap = () => {
   const getAgriData = async (distance) => {
     try {
       showLoading();
-      const url = `http://localhost:8080/api/v1/search/office?query=s&x=${x}&y=${y}&distance=${distance}`;
+      const url = `https://${import.meta.env.VITE_DOMAIN}/api/v1/search/office?query=s&x=${x}&y=${y}&distance=${distance}`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -68,7 +68,7 @@ const AgriMap = () => {
 
     const vworldLayer = new TileLayer({
       source: new XYZ({
-        url: `http://localhost:8080/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
+        url: `https://${import.meta.env.VITE_DOMAIN}/api/v1/search/wmts/Base/{z}/{y}/{x}.png`,
       }),
     });
 
