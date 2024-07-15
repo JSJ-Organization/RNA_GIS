@@ -104,8 +104,8 @@ jobs:
           ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
             echo '#!/bin/bash
             set -e
-            cd /home/${SSH_USERNAME}
-            ./init-letsencrypt.sh ${DOMAIN}
+            cd /home/${{ secrets.SSH_USERNAME }}
+            ./init-letsencrypt.sh ${{ secrets.DOMAIN }}
             docker-compose pull
             docker-compose up -d --remove-orphans
             docker image prune -f
