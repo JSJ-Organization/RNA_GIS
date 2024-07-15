@@ -17,7 +17,7 @@ domains=("$1")
 rsa_key_size=4096
 data_path="./certbot"
 email="123or@naver.com" # Adding a valid address is strongly recommended
-staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
+staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then
   read -p "Existing data found for ${domains[*]}. Continue and replace existing certificate? (y/N) " decision
@@ -36,7 +36,7 @@ fi
 
 echo "### Creating dummy certificate for ${domains[*]} ..."
 path="$data_path/conf/live/${domains[*]}"
-mkdir -p "$path"
+mkdir -p "$path" # Ensure the directory exists
 chmod 755 "$path"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
@@ -81,6 +81,3 @@ docker-compose run --rm --entrypoint "\
     --agree-tos \
     --force-renewal" certbot
 echo
-
-echo "### Reloading nginx ..."
-docker-compose exec frontend nginx -s reload
