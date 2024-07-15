@@ -99,21 +99,19 @@ jobs:
         run: |
           ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "chmod +x /home/${{ secrets.SSH_USERNAME }}/init-letsencrypt.sh"
 
-      - name: Run init-letsencrypt.sh via SSH
-        run: |
-          ssh -t -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USERNAME }} && ./init-letsencrypt.sh ${{ secrets.DOMAIN }}"
-
-      - name: Deploy via SSH
+      - name: Create and run remote script via SSH
         run: |
           ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+            echo '#!/bin/bash
+            set -e
             cd /home/${{ secrets.SSH_USERNAME }}
+            ./init-letsencrypt.sh ${DOMAIN}
             docker-compose pull
             docker-compose up -d --remove-orphans
             docker image prune -f
-
-            # Delete old frontend images except the latest one
-            docker images --format "{{.Repository}}:{{.Tag}}" | grep "${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend" | sort -t: -k2 -r | tail -n +2 | awk -F: '{print $1 ":" $2}' | xargs -r docker rmi -f
-
-            # Delete old backend images except the latest one
-            docker images --format "{{.Repository}}:{{.Tag}}" | grep "${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend" | sort -t: -k2 -r | tail -n +2 | awk -F: '{print $1 ":" $2}' | xargs -r docker rmi -f
+            docker images --format "{{.Repository}}:{{.Tag}}" | grep "${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-frontend" | sort -t: -k2 -r | tail -n +2 | awk -F: "{print \$1 \\":\" \$2}" | xargs -r docker rmi -f
+            docker images --format "{{.Repository}}:{{.Tag}}" | grep "${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPO_NAME }}-backend" | sort -t: -k2 -r | tail -n +2 | awk -F: "{print \$1 \\":\" \$2}" | xargs -r docker rmi -f
+            ' > /home/${{ secrets.SSH_USERNAME }}/remote-script.sh
+            chmod +x /home/${{ secrets.SSH_USERNAME }}/remote-script.sh
+            ./remote-script.sh
           EOF
