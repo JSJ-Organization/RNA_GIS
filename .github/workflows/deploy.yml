@@ -35,15 +35,6 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Create SSL directory and files
-        run: |
-          pwd
-          mkdir -p frontend/ssl
-          echo "${{ secrets.SSL_CERT_PEM }}" > frontend/ssl/cert.pem
-          echo "${{ secrets.SSL_CHAIN_PEM }}" > frontend/ssl/chain.pem
-          echo "${{ secrets.SSL_FULLCHAIN_PEM }}" > frontend/ssl/fullchain.pem
-          echo "${{ secrets.SSL_PRIVKEY_PEM }}" > frontend/ssl/privkey.pem
-
       - name: Build, tag, and push backend image
         run: |
           IMAGE_TAG=$VERSION
@@ -102,7 +93,15 @@ jobs:
 
       - name: Copy files via SSH
         run: |
-          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
+          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env init-letsencrypt.sh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
+
+      - name: Run init-letsencrypt.sh via SSH
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+          cd /home/${{ secrets.SSH_USERNAME }}
+          chmod +x init-letsencrypt.sh
+          ./init-letsencrypt.sh ${{ secrets.DOMAIN }}
+          EOF
 
       - name: Deploy via SSH
         run: |
