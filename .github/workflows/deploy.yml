@@ -95,13 +95,13 @@ jobs:
         run: |
           scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no docker-compose.yml .env init-letsencrypt.sh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/
 
+      - name: Make init-letsencrypt.sh executable via SSH
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "chmod +x /home/${{ secrets.SSH_USERNAME }}/init-letsencrypt.sh"
+
       - name: Run init-letsencrypt.sh via SSH
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-          cd /home/${{ secrets.SSH_USERNAME }}
-          chmod +x init-letsencrypt.sh
-          ./init-letsencrypt.sh ${{ secrets.DOMAIN }}
-          EOF
+          ssh -t -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USERNAME }} && ./init-letsencrypt.sh ${{ secrets.DOMAIN }}"
 
       - name: Deploy via SSH
         run: |
