@@ -76,8 +76,6 @@ services:
       VITE_PGADMIN_URL: ${VITE_PGADMIN_URL}
       VITE_DOMAIN: ${VITE_DOMAIN}
       TZ: Asia/Seoul
-    volumes:
-      - ssl:/etc/letsencrypt/live/${DOMAIN}
     networks:
       - geoserver-net
 
