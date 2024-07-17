@@ -38,7 +38,7 @@ Backend: 민성조
 | **Back-end** | Java, Spring Boot, Gradle, JPA, Spring Batch |
 | **DB** | PostGIS, PgAdmin |
 | **Server** | GeoServer, Nginx, Ubuntu, Docker |
-| **Collaboration Tools** | GitHub |
+| **Collaboration Tools** | GitHub, Swagger |
 # 구조
 ![image](https://github.com/user-attachments/assets/1b58210d-8958-4d35-9057-b4a7cba516fc)
 ---
