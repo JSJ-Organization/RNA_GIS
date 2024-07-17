@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgis/postgis:13-3.1
+    image: postgis/postgis:13-3.4
     container_name: gis_postgres
     ports:
       - "${POSTGIS_PORT}:5432"
